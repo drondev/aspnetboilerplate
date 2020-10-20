@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Abp.DynamicEntityProperties
@@ -7,12 +8,12 @@ namespace Abp.DynamicEntityProperties
     {
         public static NullDynamicEntityPropertyStore Instance = new NullDynamicEntityPropertyStore();
 
-        public DynamicEntityProperty Get(int id)
+        public DynamicEntityProperty Get(Guid id)
         {
             return default;
         }
 
-        public Task<DynamicEntityProperty> GetAsync(int id)
+        public Task<DynamicEntityProperty> GetAsync(Guid id)
         {
             return Task.FromResult<DynamicEntityProperty>(default);
         }
@@ -55,11 +56,11 @@ namespace Abp.DynamicEntityProperties
             return Task.CompletedTask;
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
         }
 
-        public Task DeleteAsync(int id)
+        public Task DeleteAsync(Guid id)
         {
             return Task.CompletedTask;
         }

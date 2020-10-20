@@ -1,12 +1,13 @@
-﻿using Abp.Data;
+﻿using System;
+using Abp.Data;
 using Abp.Domain.Entities;
 using Abp.Domain.Uow;
 using Abp.Transactions;
 
 namespace Abp.Dapper.Repositories
 {
-    public class DapperEfRepositoryBase<TDbContext, TEntity> : DapperEfRepositoryBase<TDbContext, TEntity, int>, IDapperRepository<TEntity>
-        where TEntity : class, IEntity<int>
+    public class DapperEfRepositoryBase<TDbContext, TEntity> : DapperEfRepositoryBase<TDbContext, TEntity, Guid>, IDapperRepository<TEntity>
+        where TEntity : class, IEntity<Guid>
         where TDbContext : class
 
     {

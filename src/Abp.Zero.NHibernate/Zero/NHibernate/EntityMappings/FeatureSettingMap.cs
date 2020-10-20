@@ -1,9 +1,10 @@
+using System;
 using Abp.Application.Features;
 using Abp.NHibernate.EntityMappings;
 
 namespace Abp.Zero.NHibernate.EntityMappings
 {
-    public class FeatureSettingMap : EntityMap<FeatureSetting, long>
+    public class FeatureSettingMap : EntityMap<FeatureSetting, Guid>
     {
         public FeatureSettingMap()
             : base("AbpFeatures")

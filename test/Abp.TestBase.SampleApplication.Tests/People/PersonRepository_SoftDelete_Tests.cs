@@ -74,7 +74,7 @@ namespace Abp.TestBase.SampleApplication.Tests.People
         [Fact]
         public async Task Should_Set_Deletion_Audit_Informations()
         {
-            const long userId = 42;
+            const Guid userId = 42;
             AbpSession.UserId = userId;
 
             var uowManager = Resolve<IUnitOfWorkManager>();

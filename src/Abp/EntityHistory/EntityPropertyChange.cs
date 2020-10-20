@@ -1,11 +1,12 @@
-﻿using Abp.Domain.Entities;
+﻿using System;
+using Abp.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Abp.EntityHistory
 {
     [Table("AbpEntityPropertyChanges")]
-    public class EntityPropertyChange : Entity<long>, IMayHaveTenant
+    public class EntityPropertyChange : Entity, IMayHaveTenant
     {
         /// <summary>
         /// Maximum length of <see cref="PropertyName"/> property.
@@ -58,6 +59,6 @@ namespace Abp.EntityHistory
         /// <summary>
         /// TenantId.
         /// </summary>
-        public virtual int? TenantId { get; set; }
+        public virtual Guid? TenantId { get; set; }
     }
 }

@@ -12,12 +12,12 @@ namespace Abp.Notifications
         /// <summary>
         /// TenantId.
         /// </summary>
-        public int? TenantId { get; set; }
+        public Guid? TenantId { get; set; }
 
         /// <summary>
         /// User Id.
         /// </summary>
-        public long UserId { get; set; }
+        public Guid UserId { get; set; }
 
         /// <summary>
         /// Current state of the user notification.

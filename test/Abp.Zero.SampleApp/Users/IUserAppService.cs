@@ -10,7 +10,7 @@ namespace Abp.Zero.SampleApp.Users
 
         void UpdateUser(UpdateUserInput input);
 
-        void DeleteUser(long userId);
+        void DeleteUser(Guid userId);
 
         Task ResetPassword(ResetPasswordInput input);
 

@@ -16,7 +16,7 @@ namespace Abp.DynamicEntityProperties
         private readonly IDynamicEntityPropertyDefinitionManager _dynamicEntityPropertyDefinitionManager;
 
         public const string CacheName = "AbpZeroDynamicPropertyCache";
-        private ITypedCache<int, DynamicProperty> DynamicPropertyCache => _cacheManager.GetCache<int, DynamicProperty>(CacheName);
+        private ITypedCache<Guid, DynamicProperty> DynamicPropertyCache => _cacheManager.GetCache<Guid, DynamicProperty>(CacheName);
 
         public DynamicPropertyManager(
             ICacheManager cacheManager,
@@ -31,12 +31,12 @@ namespace Abp.DynamicEntityProperties
             _dynamicEntityPropertyDefinitionManager = dynamicEntityPropertyDefinitionManager;
         }
 
-        public virtual DynamicProperty Get(int id)
+        public virtual DynamicProperty Get(Guid id)
         {
             return DynamicPropertyCache.Get(id, () => _dynamicPropertyStore.Get(id));
         }
 
-        public virtual Task<DynamicProperty> GetAsync(int id)
+        public virtual Task<DynamicProperty> GetAsync(Guid id)
         {
             return DynamicPropertyCache.GetAsync(id, (i) => _dynamicPropertyStore.GetAsync(id));
         }
@@ -121,7 +121,7 @@ namespace Abp.DynamicEntityProperties
             await DynamicPropertyCache.SetAsync(dynamicProperty.Id, dynamicProperty);
         }
 
-        public virtual void Delete(int id)
+        public virtual void Delete(Guid id)
         {
             using (var uow = _unitOfWorkManager.Begin(TransactionScopeOption.RequiresNew))
             {
@@ -132,7 +132,7 @@ namespace Abp.DynamicEntityProperties
             DynamicPropertyCache.Remove(id);
         }
 
-        public virtual async Task DeleteAsync(int id)
+        public virtual async Task DeleteAsync(Guid id)
         {
             using (var uow = _unitOfWorkManager.Begin(TransactionScopeOption.RequiresNew))
             {

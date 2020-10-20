@@ -458,12 +458,12 @@ namespace Abp.Tests.Configuration
                 };
             }
 
-            public Task<SettingInfo> GetSettingOrNullAsync(int? tenantId, long? userId, string name)
+            public Task<SettingInfo> GetSettingOrNullAsync(Guid? tenantId, Guid? userId, string name)
             {
                 return Task.FromResult(GetSettingOrNull(tenantId, userId, name));
             }
 
-            public SettingInfo GetSettingOrNull(int? tenantId, long? userId, string name)
+            public SettingInfo GetSettingOrNull(Guid? tenantId, Guid? userId, string name)
             {
                 return _settings.FirstOrDefault(s => s.TenantId == tenantId && s.UserId == userId && s.Name == name);
             }
@@ -510,12 +510,12 @@ namespace Abp.Tests.Configuration
                 }
             }
 
-            public Task<List<SettingInfo>> GetAllListAsync(int? tenantId, long? userId)
+            public Task<List<SettingInfo>> GetAllListAsync(Guid? tenantId, Guid? userId)
             {
                 return Task.FromResult(GetAllList(tenantId, userId));
             }
 
-            public List<SettingInfo> GetAllList(int? tenantId, long? userId)
+            public List<SettingInfo> GetAllList(Guid? tenantId, Guid? userId)
             {
                 var allSetting = _settings.Where(s => s.TenantId == tenantId && s.UserId == userId)
                     .Select(s => new SettingInfo(s.TenantId, s.UserId, s.Name, s.Value)).ToList();

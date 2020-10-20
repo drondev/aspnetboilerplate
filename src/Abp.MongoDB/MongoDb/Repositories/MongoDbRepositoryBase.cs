@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
@@ -10,8 +11,8 @@ namespace Abp.MongoDb.Repositories
     /// Implements IRepository for MongoDB.
     /// </summary>
     /// <typeparam name="TEntity">Type of the Entity for this repository</typeparam>
-    public class MongoDbRepositoryBase<TEntity> : MongoDbRepositoryBase<TEntity, int>, IRepository<TEntity>
-        where TEntity : class, IEntity<int>
+    public class MongoDbRepositoryBase<TEntity> : MongoDbRepositoryBase<TEntity, Guid>, IRepository<TEntity>
+        where TEntity : class, IEntity<Guid>
     {
         public MongoDbRepositoryBase(IMongoDatabaseProvider databaseProvider)
             : base(databaseProvider)

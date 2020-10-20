@@ -1,17 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Abp.DynamicEntityProperties
 {
     public interface IDynamicPropertyValueStore
     {
-        DynamicPropertyValue Get(int id);
+        DynamicPropertyValue Get(Guid id);
 
-        Task<DynamicPropertyValue> GetAsync(int id);
+        Task<DynamicPropertyValue> GetAsync(Guid id);
 
-        List<DynamicPropertyValue> GetAllValuesOfDynamicProperty(int dynamicPropertyId);
+        List<DynamicPropertyValue> GetAllValuesOfDynamicProperty(Guid dynamicPropertyId);
 
-        Task<List<DynamicPropertyValue>> GetAllValuesOfDynamicPropertyAsync(int dynamicPropertyId);
+        Task<List<DynamicPropertyValue>> GetAllValuesOfDynamicPropertyAsync(Guid dynamicPropertyId);
 
         void Add(DynamicPropertyValue dynamicPropertyValue);
 
@@ -21,12 +22,12 @@ namespace Abp.DynamicEntityProperties
 
         Task UpdateAsync(DynamicPropertyValue dynamicPropertyValue);
 
-        void Delete(int id);
+        void Delete(Guid id);
 
-        Task DeleteAsync(int id);
+        Task DeleteAsync(Guid id);
 
-        void CleanValues(int dynamicPropertyId);
+        void CleanValues(Guid dynamicPropertyId);
 
-        Task CleanValuesAsync(int dynamicPropertyId);
+        Task CleanValuesAsync(Guid dynamicPropertyId);
     }
 }

@@ -65,13 +65,13 @@ namespace Abp.EntityFramework.Extensions
         /// <param name="repository">The repository.</param>
         /// <param name="queryable">The queryable.</param>
         /// <returns></returns>
-        public static TResult Nolocking<TEntity, TResult>(this IRepository<TEntity, int> repository, [NotNull] Func<IQueryable<TEntity>, TResult> queryable) where TEntity : class, IEntity<int>
+        public static TResult Nolocking<TEntity, TResult>(this IRepository<TEntity, Guid> repository, [NotNull] Func<IQueryable<TEntity>, TResult> queryable) where TEntity : class, IEntity<Guid>
         {
             Check.NotNull(queryable, nameof(queryable));
 
             TResult result;
 
-            using (var nolockInterceptor = repository.As<AbpRepositoryBase<TEntity, int>>().IocResolver.ResolveAsDisposable<WithNoLockInterceptor>())
+            using (var nolockInterceptor = repository.As<AbpRepositoryBase<TEntity, Guid>>().IocResolver.ResolveAsDisposable<WithNoLockInterceptor>())
             {
                 using (nolockInterceptor.Object.UseNolocking())
                 {

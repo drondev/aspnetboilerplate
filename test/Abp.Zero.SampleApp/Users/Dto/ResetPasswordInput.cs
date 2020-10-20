@@ -2,9 +2,9 @@
 {
     public class ResetPasswordInput
     {
-        public int? TenantId { get; set; }
+        public Guid? TenantId { get; set; }
 
-        public long UserId { get; set; }
+        public Guid UserId { get; set; }
 
         public string ResetCode { get; set; }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -5,7 +6,7 @@ using Abp.Events.Bus;
 
 namespace Abp.Domain.Entities
 {
-    public class AggregateRoot : AggregateRoot<int>, IAggregateRoot
+    public class AggregateRoot : AggregateRoot<Guid>, IAggregateRoot
     {
 
     }

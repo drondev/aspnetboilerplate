@@ -1,4 +1,5 @@
-﻿using Abp.Domain.Entities;
+﻿using System;
+using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using Abp.Extensions;
 using Abp.Timing;
@@ -17,7 +18,7 @@ namespace Abp.Dapper.Filters.Action
             if (entity is IModificationAudited)
             {
                 var record = entity.As<IModificationAudited>();
-                long? userId = GetAuditUserId();
+                Guid? userId = GetAuditUserId();
                 if (userId == null)
                 {
                     record.LastModifierUserId = null;

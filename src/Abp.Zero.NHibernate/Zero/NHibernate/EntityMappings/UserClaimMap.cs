@@ -1,9 +1,10 @@
-﻿using Abp.Authorization.Users;
+﻿using System;
+using Abp.Authorization.Users;
 using Abp.NHibernate.EntityMappings;
 
 namespace Abp.Zero.NHibernate.EntityMappings
 {
-    public class UserClaimMap : EntityMap<UserClaim, long>
+    public class UserClaimMap : EntityMap<UserClaim, Guid>
     {
         public UserClaimMap()
             : base("AbpUserClaims")

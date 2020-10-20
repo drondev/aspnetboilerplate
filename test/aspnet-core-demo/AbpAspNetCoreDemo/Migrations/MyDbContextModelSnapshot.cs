@@ -16,7 +16,7 @@ namespace AbpAspNetCoreDemo.Migrations
 
             modelBuilder.Entity("AbpAspNetCoreDemo.Core.Domain.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name")

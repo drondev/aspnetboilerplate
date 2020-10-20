@@ -1,15 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Abp.DynamicEntityProperties
 {
     public interface IDynamicPropertyPermissionChecker
     {
-        void CheckPermission(int dynamicPropertyId);
+        void CheckPermission(Guid dynamicPropertyId);
 
-        Task CheckPermissionAsync(int dynamicPropertyId);
+        Task CheckPermissionAsync(Guid dynamicPropertyId);
 
-        bool IsGranted(int dynamicPropertyId);
+        bool IsGranted(Guid dynamicPropertyId);
 
-        Task<bool> IsGrantedAsync(int dynamicPropertyId);
+        Task<bool> IsGrantedAsync(Guid dynamicPropertyId);
     }
 }

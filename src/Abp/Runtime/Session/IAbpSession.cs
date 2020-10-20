@@ -12,14 +12,14 @@ namespace Abp.Runtime.Session
         /// Gets current UserId or null.
         /// It can be null if no user logged in.
         /// </summary>
-        long? UserId { get; }
+        Guid? UserId { get; }
 
         /// <summary>
         /// Gets current TenantId or null.
         /// This TenantId should be the TenantId of the <see cref="UserId"/>.
         /// It can be null if given <see cref="UserId"/> is a host user or no user logged in.
         /// </summary>
-        int? TenantId { get; }
+        Guid? TenantId { get; }
 
         /// <summary>
         /// Gets current multi-tenancy side.
@@ -30,13 +30,13 @@ namespace Abp.Runtime.Session
         /// UserId of the impersonator.
         /// This is filled if a user is performing actions behalf of the <see cref="UserId"/>.
         /// </summary>
-        long? ImpersonatorUserId { get; }
+        Guid? ImpersonatorUserId { get; }
 
         /// <summary>
         /// TenantId of the impersonator.
         /// This is filled if a user with <see cref="ImpersonatorUserId"/> performing actions behalf of the <see cref="UserId"/>.
         /// </summary>
-        int? ImpersonatorTenantId { get; }
+        Guid? ImpersonatorTenantId { get; }
 
         /// <summary>
         /// Used to change <see cref="TenantId"/> and <see cref="UserId"/> for a limited scope.
@@ -44,6 +44,6 @@ namespace Abp.Runtime.Session
         /// <param name="tenantId"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        IDisposable Use(int? tenantId, long? userId);
+        IDisposable Use(Guid? tenantId, Guid? userId);
     }
 }

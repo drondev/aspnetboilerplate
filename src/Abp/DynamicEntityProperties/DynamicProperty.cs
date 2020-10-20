@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Abp.Domain.Entities;
 
@@ -13,7 +14,7 @@ namespace Abp.DynamicEntityProperties
 
         public string Permission { get; set; }
         
-        public int? TenantId { get; set; }
+        public Guid? TenantId { get; set; }
 
         public virtual ICollection<DynamicPropertyValue> DynamicPropertyValues { get; set; }
     }

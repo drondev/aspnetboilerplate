@@ -22,7 +22,7 @@ namespace Abp.Runtime.Security
             return new UserIdentifier(identity.GetTenantId(), userId.Value);
         }
 
-        public static long? GetUserId([NotNull] this IIdentity identity)
+        public static Guid? GetUserId([NotNull] this IIdentity identity)
         {
             Check.NotNull(identity, nameof(identity));
 
@@ -34,10 +34,10 @@ namespace Abp.Runtime.Security
                 return null;
             }
 
-            return Convert.ToInt64(userIdOrNull.Value);
+            return Guid.Parse(userIdOrNull.Value);
         }
 
-        public static int? GetTenantId(this IIdentity identity)
+        public static Guid? GetTenantId(this IIdentity identity)
         {
             Check.NotNull(identity, nameof(identity));
 
@@ -49,7 +49,7 @@ namespace Abp.Runtime.Security
                 return null;
             }
 
-            return Convert.ToInt32(tenantIdOrNull.Value);
+            return Guid.Parse(tenantIdOrNull.Value);
         }
 
         public static long? GetImpersonatorUserId(this IIdentity identity)

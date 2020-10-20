@@ -14,8 +14,8 @@ namespace Abp.Zero.SampleApp.EntityFramework
         }
     }
 
-    public class AppEfRepositoryBase<TEntity> : AppEfRepositoryBase<TEntity, int>, IRepository<TEntity>
-        where TEntity : class, IEntity<int>
+    public class AppEfRepositoryBase<TEntity> : AppEfRepositoryBase<TEntity, Guid>, IRepository<TEntity>
+        where TEntity : class, IEntity<Guid>
     {
         public AppEfRepositoryBase(IDbContextProvider<AppDbContext> dbContextProvider)
             : base(dbContextProvider)

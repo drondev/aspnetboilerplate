@@ -1,10 +1,11 @@
+using System;
 using Abp.Application.Services.Dto;
 
 namespace Abp.Application.Services
 {
     public interface ICrudAppService<TEntityDto>
-        : ICrudAppService<TEntityDto, int>
-        where TEntityDto : IEntityDto<int>
+        : ICrudAppService<TEntityDto, Guid>
+        where TEntityDto : IEntityDto<Guid>
     {
 
     }

@@ -1,4 +1,5 @@
-﻿using Abp.Configuration.Startup;
+﻿using System;
+using Abp.Configuration.Startup;
 using Abp.Domain.Uow;
 using Abp.Extensions;
 using Abp.MultiTenancy;
@@ -64,7 +65,7 @@ namespace Abp.Zero.EntityFramework
             return tenantCacheItem.ConnectionString;
         }
 
-        protected virtual int? GetCurrentTenantId()
+        protected virtual Guid? GetCurrentTenantId()
         {
             return _currentUnitOfWorkProvider.Current != null
                 ? _currentUnitOfWorkProvider.Current.GetTenantId()

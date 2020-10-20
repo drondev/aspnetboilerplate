@@ -2,7 +2,7 @@
 
 namespace Abp.EntityFrameworkCore.Tests.Domain
 {
-    public class TicketListItem : IPassivable, IMustHaveTenant, IEntity<int>
+    public class TicketListItem : IPassivable, IMustHaveTenant, IEntity<Guid>
     {
         public int Id { get; set; }
 

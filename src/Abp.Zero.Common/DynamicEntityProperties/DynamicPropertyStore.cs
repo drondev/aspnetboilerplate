@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Abp.Dependency;
 using Abp.Domain.Repositories;
@@ -14,12 +15,12 @@ namespace Abp.DynamicEntityProperties
             _dynamicPropertyRepository = dynamicPropertyRepository;
         }
 
-        public virtual DynamicProperty Get(int id)
+        public virtual DynamicProperty Get(Guid id)
         {
             return _dynamicPropertyRepository.Get(id);
         }
 
-        public virtual Task<DynamicProperty> GetAsync(int id)
+        public virtual Task<DynamicProperty> GetAsync(Guid id)
         {
             return _dynamicPropertyRepository.GetAsync(id);
         }
@@ -64,12 +65,12 @@ namespace Abp.DynamicEntityProperties
             return _dynamicPropertyRepository.UpdateAsync(dynamicProperty);
         }
 
-        public virtual void Delete(int id)
+        public virtual void Delete(Guid id)
         {
             _dynamicPropertyRepository.Delete(id);
         }
 
-        public virtual Task DeleteAsync(int id)
+        public virtual Task DeleteAsync(Guid id)
         {
             return _dynamicPropertyRepository.DeleteAsync(id);
         }

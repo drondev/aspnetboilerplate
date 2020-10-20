@@ -62,12 +62,12 @@ namespace Abp.Auditing
         /// <summary>
         /// TenantId.
         /// </summary>
-        public virtual int? TenantId { get; set; }
+        public virtual Guid? TenantId { get; set; }
 
         /// <summary>
         /// UserId.
         /// </summary>
-        public virtual long? UserId { get; set; }
+        public virtual Guid? UserId { get; set; }
 
         /// <summary>
         /// Service (class/interface) name.
@@ -122,12 +122,12 @@ namespace Abp.Auditing
         /// <summary>
         /// <see cref="AuditInfo.ImpersonatorUserId"/>.
         /// </summary>
-        public virtual long? ImpersonatorUserId { get; set; }
+        public virtual Guid? ImpersonatorUserId { get; set; }
 
         /// <summary>
         /// <see cref="AuditInfo.ImpersonatorTenantId"/>.
         /// </summary>
-        public virtual int? ImpersonatorTenantId { get; set; }
+        public virtual Guid? ImpersonatorTenantId { get; set; }
 
         /// <summary>
         /// <see cref="AuditInfo.CustomData"/>.

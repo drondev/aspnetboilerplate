@@ -1,3 +1,4 @@
+using System;
 using JetBrains.Annotations;
 
 namespace Abp.MultiTenancy
@@ -5,7 +6,7 @@ namespace Abp.MultiTenancy
     public interface ITenantStore
     {
         [CanBeNull]
-        TenantInfo Find(int tenantId);
+        TenantInfo Find(Guid tenantId);
 
         [CanBeNull]
         TenantInfo Find([NotNull] string tenancyName);

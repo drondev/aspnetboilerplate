@@ -20,7 +20,7 @@ namespace Abp.DynamicEntityProperties
 
         public const string CacheName = "AbpZeroDynamicEntityPropertyCache";
 
-        private ITypedCache<int, DynamicEntityProperty> DynamicEntityPropertyCache => _cacheManager.GetCache<int, DynamicEntityProperty>(CacheName);
+        private ITypedCache<Guid, DynamicEntityProperty> DynamicEntityPropertyCache => _cacheManager.GetCache<Guid, DynamicEntityProperty>(CacheName);
 
         public DynamicEntityPropertyManager(
             IDynamicPropertyPermissionChecker dynamicPropertyPermissionChecker,
@@ -45,14 +45,14 @@ namespace Abp.DynamicEntityProperties
             }
         }
 
-        public virtual DynamicEntityProperty Get(int id)
+        public virtual DynamicEntityProperty Get(Guid id)
         {
             var entityProperty = DynamicEntityPropertyCache.Get(id, () => DynamicEntityPropertyStore.Get(id));
             _dynamicPropertyPermissionChecker.CheckPermission(entityProperty.DynamicPropertyId);
             return entityProperty;
         }
 
-        public virtual async Task<DynamicEntityProperty> GetAsync(int id)
+        public virtual async Task<DynamicEntityProperty> GetAsync(Guid id)
         {
             var entityProperty = await DynamicEntityPropertyCache.GetAsync(id, () => DynamicEntityPropertyStore.GetAsync(id));
             await _dynamicPropertyPermissionChecker.CheckPermissionAsync(entityProperty.DynamicPropertyId);
@@ -162,7 +162,7 @@ namespace Abp.DynamicEntityProperties
             await DynamicEntityPropertyCache.SetAsync(dynamicEntityProperty.Id, dynamicEntityProperty);
         }
 
-        public virtual void Delete(int id)
+        public virtual void Delete(Guid id)
         {
             var dynamicEntityProperty = Get(id);//Get checks permission, no need to check it again
             if (dynamicEntityProperty == null)
@@ -173,7 +173,7 @@ namespace Abp.DynamicEntityProperties
             DynamicEntityPropertyCache.Remove(id);
         }
 
-        public virtual async Task DeleteAsync(int id)
+        public virtual async Task DeleteAsync(Guid id)
         {
             var dynamicEntityProperty = await GetAsync(id);//Get checks permission, no need to check it again
             if (dynamicEntityProperty == null)

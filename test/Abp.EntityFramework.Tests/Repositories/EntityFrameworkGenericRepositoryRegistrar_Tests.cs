@@ -114,7 +114,7 @@ namespace Abp.EntityFramework.Tests.Repositories
         }
 
         public interface IMyModuleRepository<TEntity> : IRepository<TEntity>
-            where TEntity : class, IEntity<int>
+            where TEntity : class, IEntity<Guid>
         {
 
         }
@@ -134,8 +134,8 @@ namespace Abp.EntityFramework.Tests.Repositories
             }
         }
 
-        public class MyModuleRepositoryBase<TEntity> : MyModuleRepositoryBase<TEntity, int>, IMyModuleRepository<TEntity>
-            where TEntity : class, IEntity<int>
+        public class MyModuleRepositoryBase<TEntity> : MyModuleRepositoryBase<TEntity, Guid>, IMyModuleRepository<TEntity>
+            where TEntity : class, IEntity<Guid>
         {
             public MyModuleRepositoryBase(IDbContextProvider<MyModuleDbContext> dbContextProvider)
                 : base(dbContextProvider)

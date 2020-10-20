@@ -1,8 +1,9 @@
-﻿using Abp.Domain.Entities;
+﻿using System;
+using Abp.Domain.Entities;
 
 namespace Abp.Dapper.Repositories
 {
-    public interface IDapperRepository<TEntity> : IDapperRepository<TEntity, int> where TEntity : class, IEntity<int>
+    public interface IDapperRepository<TEntity> : IDapperRepository<TEntity, Guid> where TEntity : class, IEntity<Guid>
     {
     }
 }

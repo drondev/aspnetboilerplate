@@ -9,7 +9,7 @@ namespace Abp.MultiTenancy
 
         public const string ByNameCacheName = "AbpZeroTenantByNameCache";
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 
@@ -17,7 +17,7 @@ namespace Abp.MultiTenancy
 
         public string ConnectionString { get; set; }
 
-        public int? EditionId { get; set; }
+        public Guid? EditionId { get; set; }
 
         public bool IsActive { get; set; }
 

@@ -11,11 +11,11 @@ namespace Abp.EntityHistory
         /// </summary>
         public static async Task<EntityHistorySnapshot> GetSnapshotAsync<TEntity>(
             this IEntitySnapshotManager entitySnapshotManager, 
-            int id, 
+            Guid id, 
             DateTime snapshotTime)
-            where TEntity : class, IEntity<int>
+            where TEntity : class, IEntity<Guid>
         {
-            return await entitySnapshotManager.GetSnapshotAsync<TEntity, int>(id, snapshotTime);
+            return await entitySnapshotManager.GetSnapshotAsync<TEntity, Guid>(id, snapshotTime);
         }
     }
 }

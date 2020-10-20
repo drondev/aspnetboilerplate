@@ -97,7 +97,7 @@ namespace Abp.AspNetCore.Tests
         [InlineData("http://{TENANCY_NAME}:80", "http://default:80", 1)]
         [InlineData("http://{TENANCY_NAME}:80", "http://test:80", null)]
         [InlineData("http://{TENANCY_NAME}.mysite.com/host", "http://mysite.default.com/host", null)]
-        public async Task DomainTenantResolveContributor_Test(string domainFormat, string domain, int? tenantId)
+        public async Task DomainTenantResolveContributor_Test(string domainFormat, string domain, Guid? tenantId)
         {
             _multiTenancyConfiguration.DomainFormat = domainFormat;
             Client.BaseAddress = new Uri(domain);

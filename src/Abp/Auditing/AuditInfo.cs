@@ -10,22 +10,22 @@ namespace Abp.Auditing
         /// <summary>
         /// TenantId.
         /// </summary>
-        public int? TenantId { get; set; }
+        public Guid? TenantId { get; set; }
         
         /// <summary>
         /// UserId.
         /// </summary>
-        public long? UserId { get; set; }
+        public Guid? UserId { get; set; }
 
         /// <summary>
         /// ImpersonatorUserId.
         /// </summary>
-        public long? ImpersonatorUserId { get; set; }
+        public Guid? ImpersonatorUserId { get; set; }
 
         /// <summary>
         /// ImpersonatorTenantId.
         /// </summary>
-        public int? ImpersonatorTenantId { get; set; }
+        public Guid? ImpersonatorTenantId { get; set; }
 
         /// <summary>
         /// Service (class/interface) name.

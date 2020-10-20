@@ -53,7 +53,7 @@ namespace Abp.Zero.SampleApp.Users
             _userRepository.Update(user);
         }
 
-        public void DeleteUser(long userId)
+        public void DeleteUser(Guid userId)
         {
             _userRepository.Delete(userId);
         }

@@ -1,3 +1,4 @@
+using System;
 using Abp.Authorization.Users;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
@@ -26,7 +27,7 @@ namespace Abp.MultiTenancy
             _unitOfWorkManager = unitOfWorkManager;
         }
 
-        public virtual TenantCacheItem Get(int tenantId)
+        public virtual TenantCacheItem Get(Guid tenantId)
         {
             var cacheItem = GetOrNull(tenantId);
 
@@ -67,7 +68,7 @@ namespace Abp.MultiTenancy
             return Get(tenantId.Value);
         }
 
-        public TenantCacheItem GetOrNull(int tenantId)
+        public TenantCacheItem GetOrNull(Guid tenantId)
         {
             return _cacheManager
                 .GetTenantCache()
@@ -100,7 +101,7 @@ namespace Abp.MultiTenancy
         }
 
         [UnitOfWork]
-        protected virtual TTenant GetTenantOrNull(int tenantId)
+        protected virtual TTenant GetTenantOrNull(Guid tenantId)
         {
             using (_unitOfWorkManager.Current.SetTenantId(null))
             {
