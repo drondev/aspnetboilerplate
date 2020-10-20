@@ -12,7 +12,7 @@ namespace Abp.Auditing
     /// Used to store audit logs.
     /// </summary>
     [Table("AbpAuditLogs")]
-    public class AuditLog : Entity<long>, IMayHaveTenant
+    public class AuditLog : Entity<Guid>, IMayHaveTenant
     {
         /// <summary>
         /// Maximum length of <see cref="ServiceName"/> property.

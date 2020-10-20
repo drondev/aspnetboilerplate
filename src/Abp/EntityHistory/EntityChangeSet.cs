@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Abp.EntityHistory
 {
     [Table("AbpEntityChangeSets")]
-    public class EntityChangeSet : Entity<long>, IHasCreationTime, IMayHaveTenant, IExtendableObject
+    public class EntityChangeSet : Entity<Guid>, IHasCreationTime, IMayHaveTenant, IExtendableObject
     {
         /// <summary>
         /// Maximum length of <see cref="BrowserInfo"/> property.

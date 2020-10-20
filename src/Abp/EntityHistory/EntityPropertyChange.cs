@@ -29,7 +29,7 @@ namespace Abp.EntityHistory
         /// <summary>
         /// EntityChangeId.
         /// </summary>
-        public virtual long EntityChangeId { get; set; }
+        public virtual Guid EntityChangeId { get; set; }
 
         /// <summary>
         /// NewValue.
