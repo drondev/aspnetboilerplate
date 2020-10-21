@@ -33,7 +33,7 @@ namespace Abp.Application.Features
     {
         private readonly ICacheManager _cacheManager;
         private readonly IRepository<TenantFeatureSetting, Guid> _tenantFeatureRepository;
-        private readonly IRepository<TTenant> _tenantRepository;
+        private readonly IRepository<TTenant, Guid> _tenantRepository;
         private readonly IRepository<EditionFeatureSetting, Guid> _editionFeatureRepository;
         private readonly IFeatureManager _featureManager;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
@@ -47,7 +47,7 @@ namespace Abp.Application.Features
         public AbpFeatureValueStore(
             ICacheManager cacheManager,
             IRepository<TenantFeatureSetting, Guid> tenantFeatureRepository,
-            IRepository<TTenant> tenantRepository,
+            IRepository<TTenant, Guid> tenantRepository,
             IRepository<EditionFeatureSetting, Guid> editionFeatureRepository,
             IFeatureManager featureManager,
             IUnitOfWorkManager unitOfWorkManager)

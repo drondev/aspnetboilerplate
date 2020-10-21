@@ -46,13 +46,13 @@ namespace Abp.Authorization.Roles
 
         public IQueryable<TRole> Roles => _roleRepository.GetAll();
 
-        private readonly IRepository<TRole> _roleRepository;
+        private readonly IRepository<TRole, Guid> _roleRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly IRepository<RolePermissionSetting, Guid> _rolePermissionSettingRepository;
 
         public AbpRoleStore(
             IUnitOfWorkManager unitOfWorkManager,
-            IRepository<TRole> roleRepository, 
+            IRepository<TRole, Guid> roleRepository, 
             IRepository<RolePermissionSetting, Guid> rolePermissionSettingRepository)
         {
             _unitOfWorkManager = unitOfWorkManager;

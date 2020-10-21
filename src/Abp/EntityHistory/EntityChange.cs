@@ -35,7 +35,7 @@ namespace Abp.EntityHistory
         /// <summary>
         /// Gets/sets change set id, used to group entity changes.
         /// </summary>
-        public virtual long EntityChangeSetId { get; set; }
+        public virtual Guid EntityChangeSetId { get; set; }
 
         /// <summary>
         /// Gets/sets primary key of the entity.

@@ -14,12 +14,12 @@ namespace Abp.MultiTenancy
         where TUser : AbpUserBase
     {
         private readonly ICacheManager _cacheManager;
-        private readonly IRepository<TTenant> _tenantRepository;
+        private readonly IRepository<TTenant, Guid> _tenantRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         public TenantCache(
             ICacheManager cacheManager,
-            IRepository<TTenant> tenantRepository,
+            IRepository<TTenant, Guid> tenantRepository,
             IUnitOfWorkManager unitOfWorkManager)
         {
             _cacheManager = cacheManager;

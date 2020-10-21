@@ -10,7 +10,7 @@ namespace Abp.Configuration
     /// Represents a setting for a tenant or user.
     /// </summary>
     [Table("AbpSettings")]
-    public class Setting : AuditedEntity<long>, IMayHaveTenant
+    public class Setting : AuditedEntity<Guid>, IMayHaveTenant
     {
         /// <summary>
         /// Maximum length of the <see cref="Name"/> property.

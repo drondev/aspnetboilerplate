@@ -29,7 +29,7 @@ namespace Abp.Localization
 
         private ITypedCache<Guid, Dictionary<string, ApplicationLanguage>> LanguageListCache => _cacheManager.GetCache<Guid, Dictionary<string, ApplicationLanguage>>(CacheName);
 
-        private readonly IRepository<ApplicationLanguage> _languageRepository;
+        private readonly IRepository<ApplicationLanguage, Guid> _languageRepository;
         private readonly ICacheManager _cacheManager;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly ISettingManager _settingManager;
@@ -38,7 +38,7 @@ namespace Abp.Localization
         /// Initializes a new instance of the <see cref="ApplicationLanguageManager"/> class.
         /// </summary>
         public ApplicationLanguageManager(
-            IRepository<ApplicationLanguage> languageRepository,
+            IRepository<ApplicationLanguage, Guid> languageRepository,
             ICacheManager cacheManager,
             IUnitOfWorkManager unitOfWorkManager,
             ISettingManager settingManager)

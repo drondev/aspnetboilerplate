@@ -20,10 +20,10 @@ namespace Abp.Application.Editions
 
         public IFeatureManager FeatureManager { get; set; }
 
-        protected IRepository<Edition> EditionRepository { get; set; }
+        protected IRepository<Edition, Guid> EditionRepository { get; set; }
 
         public AbpEditionManager(
-            IRepository<Edition> editionRepository,
+            IRepository<Edition, Guid> editionRepository,
             IAbpZeroFeatureValueStore featureValueStore)
         {
             _featureValueStore = featureValueStore;

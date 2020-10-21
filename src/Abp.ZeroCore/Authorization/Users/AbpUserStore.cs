@@ -64,7 +64,7 @@ namespace Abp.Authorization.Users
 
         public IRepository<TUser, Guid> UserRepository { get; }
 
-        private readonly IRepository<TRole> _roleRepository;
+        private readonly IRepository<TRole, Guid> _roleRepository;
         private readonly IRepository<UserRole, Guid> _userRoleRepository;
         private readonly IAsyncQueryableExecuter _asyncQueryableExecuter;
         private readonly IRepository<UserLogin, Guid> _userLoginRepository;
@@ -78,7 +78,7 @@ namespace Abp.Authorization.Users
         public AbpUserStore(
             IUnitOfWorkManager unitOfWorkManager,
             IRepository<TUser, Guid> userRepository,
-            IRepository<TRole> roleRepository,
+            IRepository<TRole, Guid> roleRepository,
             IAsyncQueryableExecuter asyncQueryableExecuter,
             IRepository<UserRole, Guid> userRoleRepository,
             IRepository<UserLogin, Guid> userLoginRepository,

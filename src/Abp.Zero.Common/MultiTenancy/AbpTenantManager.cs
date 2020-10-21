@@ -44,14 +44,14 @@ namespace Abp.MultiTenancy
 
         public IUnitOfWorkManager UnitOfWorkManager { get; set; }
 
-        protected IRepository<TTenant> TenantRepository { get; set; }
+        protected IRepository<TTenant, Guid> TenantRepository { get; set; }
 
         protected IRepository<TenantFeatureSetting, Guid> TenantFeatureRepository { get; set; }
 
         private readonly IAbpZeroFeatureValueStore _featureValueStore;
 
         public AbpTenantManager(
-            IRepository<TTenant> tenantRepository, 
+            IRepository<TTenant, Guid> tenantRepository, 
             IRepository<TenantFeatureSetting, Guid> tenantFeatureRepository,
             AbpEditionManager editionManager,
             IAbpZeroFeatureValueStore featureValueStore)

@@ -28,7 +28,7 @@ namespace Abp.Authorization
         public IClientInfoProvider ClientInfoProvider { get; set; }
 
         protected IMultiTenancyConfig MultiTenancyConfig { get; }
-        protected IRepository<TTenant> TenantRepository { get; }
+        protected IRepository<TTenant, Guid> TenantRepository { get; }
         protected IUnitOfWorkManager UnitOfWorkManager { get; }
         protected AbpUserManager<TRole, TUser> UserManager { get; }
         protected ISettingManager SettingManager { get; }
@@ -44,7 +44,7 @@ namespace Abp.Authorization
         public AbpLogInManager(
             AbpUserManager<TRole, TUser> userManager,
             IMultiTenancyConfig multiTenancyConfig,
-            IRepository<TTenant> tenantRepository,
+            IRepository<TTenant, Guid> tenantRepository,
             IUnitOfWorkManager unitOfWorkManager,
             ISettingManager settingManager,
             IRepository<UserLoginAttempt, Guid> userLoginAttemptRepository,
