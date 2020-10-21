@@ -34,5 +34,8 @@ namespace Abp.Authorization.Users
 
         [StringLength(MaxEmailAddressLength)]
         public virtual string EmailAddress { get; set; }
+        
+        //@todo users change this....
+        public virtual Guid DronIamIdentity { get; set; }
     }
 }
