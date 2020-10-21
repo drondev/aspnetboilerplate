@@ -25,7 +25,7 @@ namespace Abp.Application.Services.Dto
     }
 
     /// <summary>
-    /// A shortcut of <see cref="NullableIdDto{TId}"/> for <see cref="int"/>.
+    /// A shortcut of <see cref="NullableIdDto{TId}"/> for <see cref="Guid"/>.
     /// </summary>
     [Serializable]
     public class NullableIdDto : NullableIdDto<Guid>
