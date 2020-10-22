@@ -288,5 +288,9 @@ namespace Abp.Domain.Repositories
 
             return Expression.Lambda<Func<TEntity, bool>>(lambdaBody, lambdaParam);
         }
+        
+        public abstract void BulkInsert(ICollection<TEntity> entities);
+
+        public abstract Task BulkInsertAsync(ICollection<TEntity> entities);
     }
 }

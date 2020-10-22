@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
 using MongoDB.Driver;
@@ -76,6 +78,18 @@ namespace Abp.MongoDb.Repositories
             Collection.Insert(entity);
             return entity;
         }
+
+        //todo: implement this for mongo and then move project in general to use this module
+        public override void BulkInsert(ICollection<TEntity> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task BulkInsertAsync(ICollection<TEntity> entities)
+        {
+            throw new NotImplementedException();
+        }
+
         public override TEntity Update(TEntity entity)
         {
             Collection.Save(entity);

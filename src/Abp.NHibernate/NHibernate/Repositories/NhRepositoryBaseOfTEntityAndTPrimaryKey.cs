@@ -99,6 +99,16 @@ namespace Abp.NHibernate.Repositories
             return entity;
         }
 
+        public override void BulkInsert(ICollection<TEntity> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task BulkInsertAsync(ICollection<TEntity> entities)
+        {
+            throw new NotImplementedException();
+        }
+
         public override async Task<TEntity> InsertAsync(TEntity entity)
         {
             await Session.SaveAsync(entity, CancellationTokenProvider.Token);

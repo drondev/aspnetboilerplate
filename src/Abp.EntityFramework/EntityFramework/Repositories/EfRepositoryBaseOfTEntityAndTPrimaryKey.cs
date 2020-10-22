@@ -126,6 +126,23 @@ namespace Abp.EntityFramework.Repositories
             return Table.Add(entity);
         }
 
+        public override void BulkInsert(ICollection<TEntity> entities)
+        {
+            Table.AddRange(entities);
+            if (entities.Any(r => r.IsTransient()))
+            {
+                Context.SaveChanges();
+            }
+        }
+
+        public override async Task BulkInsertAsync(ICollection<TEntity> entities)
+        {
+            Table.AddRange(entities);
+            if (entities.Any(r => r.IsTransient()))
+            {
+                await Context.SaveChangesAsync(CancellationTokenProvider.Token);
+            }
+        }
         public override Task<TEntity> InsertAsync(TEntity entity)
         {
             return Task.FromResult(Table.Add(entity));

@@ -137,6 +137,18 @@ namespace Abp.Domain.Repositories
         /// </summary>
         /// <param name="entity">Inserted entity</param>
         TEntity Insert(TEntity entity);
+        
+        /// <summary>
+        /// Inserts bulk entities.
+        /// </summary>
+        /// <param name="entities"></param>
+        void BulkInsert(ICollection<TEntity> entities);
+
+        /// <summary>
+        /// Inserts bulk entities.
+        /// </summary>
+        /// <param name="entities"></param>
+        Task BulkInsertAsync(ICollection<TEntity> entities);
 
         /// <summary>
         /// Inserts a new entity.
