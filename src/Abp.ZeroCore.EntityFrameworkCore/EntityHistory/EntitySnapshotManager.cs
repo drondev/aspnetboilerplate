@@ -12,7 +12,7 @@ namespace Abp.EntityHistory
 {
     public class EntitySnapshotManager : EntitySnapshotManagerBase
     {
-        public EntitySnapshotManager(IRepository<EntityChange, long> entityChangeRepository)
+        public EntitySnapshotManager(IRepository<EntityChange> entityChangeRepository)
             : base(entityChangeRepository)
         {
         }

@@ -62,35 +62,34 @@ namespace Abp.Authorization.Users
 
         public IQueryable<TUser> Users => UserRepository.GetAll();
 
-        public IRepository<TUser, long> UserRepository { get; }
+        public IRepository<TUser, Guid> UserRepository { get; }
 
-        private readonly IRepository<TRole> _roleRepository;
-        private readonly IRepository<UserRole, long> _userRoleRepository;
+        private readonly IRepository<TRole, Guid> _roleRepository;
+        private readonly IRepository<UserRole, Guid> _userRoleRepository;
         private readonly IAsyncQueryableExecuter _asyncQueryableExecuter;
-        private readonly IRepository<UserLogin, long> _userLoginRepository;
-        private readonly IRepository<UserClaim, long> _userClaimRepository;
-        private readonly IRepository<UserPermissionSetting, long> _userPermissionSettingRepository;
-        private readonly IRepository<UserOrganizationUnit, long> _userOrganizationUnitRepository;
-        private readonly IRepository<OrganizationUnitRole, long> _organizationUnitRoleRepository;
+        private readonly IRepository<UserLogin, Guid> _userLoginRepository;
+        private readonly IRepository<UserClaim, Guid> _userClaimRepository;
+        private readonly IRepository<UserPermissionSetting, Guid> _userPermissionSettingRepository;
+        private readonly IRepository<UserOrganizationUnit, Guid> _userOrganizationUnitRepository;
+        private readonly IRepository<OrganizationUnitRole, Guid> _organizationUnitRoleRepository;
 
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         public AbpUserStore(
             IUnitOfWorkManager unitOfWorkManager,
-            IRepository<TUser, long> userRepository,
-            IRepository<TRole> roleRepository,
+            IRepository<TUser, Guid> userRepository,
+            IRepository<TRole, Guid> roleRepository,
             IAsyncQueryableExecuter asyncQueryableExecuter,
-            IRepository<UserRole, long> userRoleRepository,
-            IRepository<UserLogin, long> userLoginRepository,
-            IRepository<UserClaim, long> userClaimRepository,
-            IRepository<UserPermissionSetting, long> userPermissionSettingRepository, 
-            IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository, 
-            IRepository<OrganizationUnitRole, long> organizationUnitRoleRepository)
+            IRepository<UserRole, Guid> userRoleRepository,
+            IRepository<UserLogin, Guid> userLoginRepository,
+            IRepository<UserClaim, Guid> userClaimRepository,
+            IRepository<UserPermissionSetting, Guid> userPermissionSettingRepository, 
+            IRepository<UserOrganizationUnit, Guid> userOrganizationUnitRepository, 
+            IRepository<OrganizationUnitRole, Guid> organizationUnitRoleRepository)
         {
             _unitOfWorkManager = unitOfWorkManager;
             UserRepository = userRepository;
             _roleRepository = roleRepository;
-            _asyncQueryableExecuter = asyncQueryableExecuter;
             _userRoleRepository = userRoleRepository;
             _userLoginRepository = userLoginRepository;
             _userClaimRepository = userClaimRepository;
@@ -101,6 +100,7 @@ namespace Abp.Authorization.Users
             AbpSession = NullAbpSession.Instance;
             ErrorDescriber = new IdentityErrorDescriber();
             Logger = NullLogger.Instance;
+            _asyncQueryableExecuter = NullAsyncQueryableExecuter.Instance;
         }
 
         /// <summary>Saves the current store.</summary>
@@ -431,7 +431,7 @@ namespace Abp.Authorization.Users
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return UserRepository.FirstOrDefaultAsync(userId.To<long>());
+            return UserRepository.FirstOrDefaultAsync(userId.To<Guid>());
         }
 
         /// <summary>
@@ -446,7 +446,7 @@ namespace Abp.Authorization.Users
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return UserRepository.FirstOrDefault(userId.To<long>());
+            return UserRepository.FirstOrDefault(userId.To<Guid>());
         }
 
         /// <summary>
@@ -2195,7 +2195,7 @@ namespace Abp.Authorization.Users
         /// <param name="userNameOrEmailAddress">User name or email address</param>
         /// <returns>User or null</returns>
         [UnitOfWork]
-        public virtual async Task<TUser> FindByNameOrEmailAsync(int? tenantId, string userNameOrEmailAddress)
+        public virtual async Task<TUser> FindByNameOrEmailAsync(Guid? tenantId, string userNameOrEmailAddress)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
@@ -2210,7 +2210,7 @@ namespace Abp.Authorization.Users
         /// <param name="userNameOrEmailAddress">User name or email address</param>
         /// <returns>User or null</returns>
         [UnitOfWork]
-        public virtual TUser FindByNameOrEmail(int? tenantId, string userNameOrEmailAddress)
+        public virtual TUser FindByNameOrEmail(Guid? tenantId, string userNameOrEmailAddress)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
@@ -2269,7 +2269,7 @@ namespace Abp.Authorization.Users
         }
 
         [UnitOfWork]
-        public virtual Task<TUser> FindAsync(int? tenantId, UserLoginInfo login)
+        public virtual Task<TUser> FindAsync(Guid? tenantId, UserLoginInfo login)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
@@ -2283,7 +2283,7 @@ namespace Abp.Authorization.Users
         }
 
         [UnitOfWork]
-        public virtual TUser Find(int? tenantId, UserLoginInfo login)
+        public virtual TUser Find(Guid? tenantId, UserLoginInfo login)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
@@ -2296,7 +2296,7 @@ namespace Abp.Authorization.Users
             }
         }
 
-        public async Task<string> GetUserNameFromDatabaseAsync(long userId)
+        public async Task<string> GetUserNameFromDatabaseAsync(Guid userId)
         {
             using (var uow = _unitOfWorkManager.Begin(new UnitOfWorkOptions
             {
@@ -2309,7 +2309,7 @@ namespace Abp.Authorization.Users
             }
         }
 
-        public string GetUserNameFromDatabase(long userId)
+        public string GetUserNameFromDatabase(Guid userId)
         {
             using (var uow = _unitOfWorkManager.Begin(new UnitOfWorkOptions
             {
@@ -2374,21 +2374,21 @@ namespace Abp.Authorization.Users
             );
         }
 
-        public virtual async Task<IList<PermissionGrantInfo>> GetPermissionsAsync(long userId)
+        public virtual async Task<IList<PermissionGrantInfo>> GetPermissionsAsync(Guid userId)
         {
             return (await _userPermissionSettingRepository.GetAllListAsync(p => p.UserId == userId))
                 .Select(p => new PermissionGrantInfo(p.Name, p.IsGranted))
                 .ToList();
         }
 
-        public virtual IList<PermissionGrantInfo> GetPermissions(long userId)
+        public virtual IList<PermissionGrantInfo> GetPermissions(Guid userId)
         {
             return (_userPermissionSettingRepository.GetAllList(p => p.UserId == userId))
                 .Select(p => new PermissionGrantInfo(p.Name, p.IsGranted))
                 .ToList();
         }
 
-        public virtual async Task<bool> HasPermissionAsync(long userId, PermissionGrantInfo permissionGrant)
+        public virtual async Task<bool> HasPermissionAsync(Guid userId, PermissionGrantInfo permissionGrant)
         {
             return await _userPermissionSettingRepository.FirstOrDefaultAsync(
                        p => p.UserId == userId &&
@@ -2397,7 +2397,7 @@ namespace Abp.Authorization.Users
                    ) != null;
         }
 
-        public virtual bool HasPermission(long userId, PermissionGrantInfo permissionGrant)
+        public virtual bool HasPermission(Guid userId, PermissionGrantInfo permissionGrant)
         {
             return _userPermissionSettingRepository.FirstOrDefault(
                        p => p.UserId == userId &&

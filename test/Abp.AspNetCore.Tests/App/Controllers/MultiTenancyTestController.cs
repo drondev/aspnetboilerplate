@@ -12,7 +12,7 @@ namespace Abp.AspNetCore.App.Controllers
             _abpSession = abpSession;
         }
 
-        public int? GetTenantId()
+        public Guid? GetTenantId()
         {
             return _abpSession.TenantId;
         }

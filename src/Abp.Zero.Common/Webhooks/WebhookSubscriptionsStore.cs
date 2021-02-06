@@ -13,13 +13,17 @@ namespace Abp.Webhooks
     /// </summary>
     public class WebhookSubscriptionsStore : IWebhookSubscriptionsStore, ITransientDependency
     {
-        private readonly IRepository<WebhookSubscriptionInfo, Guid> _webhookSubscriptionRepository;
-        private readonly IAsyncQueryableExecuter _asyncQueryableExecuter;
+        public IAsyncQueryableExecuter AsyncQueryableExecuter { get; set; }
 
-        public WebhookSubscriptionsStore(IRepository<WebhookSubscriptionInfo, Guid> webhookSubscriptionRepository, IAsyncQueryableExecuter asyncQueryableExecuter)
+        private readonly IRepository<WebhookSubscriptionInfo, Guid> _webhookSubscriptionRepository;
+
+        public WebhookSubscriptionsStore(
+            IRepository<WebhookSubscriptionInfo, Guid> webhookSubscriptionRepository
+            )
         {
             _webhookSubscriptionRepository = webhookSubscriptionRepository;
-            _asyncQueryableExecuter = asyncQueryableExecuter;
+
+            AsyncQueryableExecuter = NullAsyncQueryableExecuter.Instance;
         }
         
         public virtual Task<WebhookSubscriptionInfo> GetAsync(Guid id)
@@ -62,7 +66,7 @@ namespace Abp.Webhooks
             _webhookSubscriptionRepository.Delete(id);
         }
         
-        public virtual async Task<List<WebhookSubscriptionInfo>> GetAllSubscriptionsAsync(int? tenantId, string webhookDefinitionName)
+        public virtual async Task<List<WebhookSubscriptionInfo>> GetAllSubscriptionsAsync(Guid? tenantId, string webhookDefinitionName)
         {
             return await _webhookSubscriptionRepository.GetAllListAsync(subscriptionInfo =>
                 subscriptionInfo.TenantId == tenantId &&
@@ -70,7 +74,7 @@ namespace Abp.Webhooks
                 subscriptionInfo.Webhooks.Contains("\"" + webhookDefinitionName + "\""));
         }
         
-        public virtual List<WebhookSubscriptionInfo> GetAllSubscriptions(int? tenantId, string webhookDefinitionName)
+        public virtual List<WebhookSubscriptionInfo> GetAllSubscriptions(Guid? tenantId, string webhookDefinitionName)
         {
             return _webhookSubscriptionRepository.GetAllList(subscriptionInfo =>
                subscriptionInfo.TenantId == tenantId &&
@@ -78,9 +82,9 @@ namespace Abp.Webhooks
                subscriptionInfo.Webhooks.Contains("\"" + webhookDefinitionName + "\""));
         }
         
-        public virtual Task<bool> IsSubscribedAsync(int? tenantId, string webhookName)
+        public virtual Task<bool> IsSubscribedAsync(Guid? tenantId, string webhookName)
         {
-            return _asyncQueryableExecuter.AnyAsync(_webhookSubscriptionRepository.GetAll()
+            return AsyncQueryableExecuter.AnyAsync(_webhookSubscriptionRepository.GetAll()
                 .Where(subscriptionInfo =>
                     subscriptionInfo.TenantId == tenantId &&
                     subscriptionInfo.IsActive &&
@@ -88,7 +92,7 @@ namespace Abp.Webhooks
                 ));
         }
         
-        public virtual bool IsSubscribed(int? tenantId, string webhookName)
+        public virtual bool IsSubscribed(Guid? tenantId, string webhookName)
         {
             return _webhookSubscriptionRepository.GetAll()
                 .Any(subscriptionInfo =>
@@ -98,12 +102,12 @@ namespace Abp.Webhooks
                 );
         }
         
-        public virtual Task<List<WebhookSubscriptionInfo>> GetAllSubscriptionsAsync(int? tenantId)
+        public virtual Task<List<WebhookSubscriptionInfo>> GetAllSubscriptionsAsync(Guid? tenantId)
         {
             return _webhookSubscriptionRepository.GetAllListAsync(subscriptionInfo => subscriptionInfo.TenantId == tenantId);
         }
         
-        public virtual List<WebhookSubscriptionInfo> GetAllSubscriptions(int? tenantId)
+        public virtual List<WebhookSubscriptionInfo> GetAllSubscriptions(Guid? tenantId)
         {
             return _webhookSubscriptionRepository.GetAllList(subscriptionInfo => subscriptionInfo.TenantId == tenantId);
         }

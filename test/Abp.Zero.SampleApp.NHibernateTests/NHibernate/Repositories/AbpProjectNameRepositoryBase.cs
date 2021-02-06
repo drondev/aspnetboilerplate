@@ -23,8 +23,8 @@ namespace Abp.Zero.SampleApp.NHibernate.Repositories
     /// A shortcut of AbpProjectNameRepositoryBase for entities with integer Id.
     /// </summary>
     /// <typeparam name="TEntity">Entity type</typeparam>
-    public abstract class AbpProjectNameRepositoryBase<TEntity> : AbpProjectNameRepositoryBase<TEntity, int>
-        where TEntity : class, IEntity<int>
+    public abstract class AbpProjectNameRepositoryBase<TEntity> : AbpProjectNameRepositoryBase<TEntity, Guid>
+        where TEntity : class, IEntity<Guid>
     {
         protected AbpProjectNameRepositoryBase(ISessionProvider sessionProvider) : base(sessionProvider)
         {

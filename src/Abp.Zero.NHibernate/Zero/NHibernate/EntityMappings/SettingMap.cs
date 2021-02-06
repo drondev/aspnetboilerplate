@@ -1,9 +1,10 @@
-﻿using Abp.Configuration;
+﻿using System;
+using Abp.Configuration;
 using Abp.NHibernate.EntityMappings;
 
 namespace Abp.Zero.NHibernate.EntityMappings
 {
-    public class SettingMap : EntityMap<Setting, long>
+    public class SettingMap : EntityMap<Setting, Guid>
     {
         public SettingMap()
             : base("AbpSettings")

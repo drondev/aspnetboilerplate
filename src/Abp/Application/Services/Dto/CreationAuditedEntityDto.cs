@@ -8,7 +8,7 @@ namespace Abp.Application.Services.Dto
     ///  A shortcut of <see cref="CreationAuditedEntityDto"/> for most used primary key type (<see cref="int"/>).
     /// </summary>
     [Serializable]
-    public abstract class CreationAuditedEntityDto : CreationAuditedEntityDto<int>
+    public abstract class CreationAuditedEntityDto : CreationAuditedEntityDto<Guid>
     {
         
     }
@@ -28,7 +28,7 @@ namespace Abp.Application.Services.Dto
         /// <summary>
         /// Creator user's id for this entity.
         /// </summary>
-        public long? CreatorUserId { get; set; }
+        public Guid? CreatorUserId { get; set; }
 
         /// <summary>
         /// Constructor.

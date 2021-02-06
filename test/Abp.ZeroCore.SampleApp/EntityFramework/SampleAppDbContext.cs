@@ -39,6 +39,8 @@ namespace Abp.ZeroCore.SampleApp.EntityFramework
 
         public DbSet<Country> Countries { get; set; }
 
+        public DbSet<Foo> Foo { get; set; }
+        
         public SampleAppDbContext(DbContextOptions<SampleAppDbContext> options) 
             : base(options)
         {
@@ -55,7 +57,7 @@ namespace Abp.ZeroCore.SampleApp.EntityFramework
             modelBuilder.Entity<Blog>().OwnsMany(x => x.Promotions, b => 
             {
                 b.WithOwner().HasForeignKey(bp => bp.BlogId);
-                b.Property<int>("Id");
+                b.Property<Guid>("Id");
                 b.HasKey("Id");
 
                 b.HasOne<Blog>()
@@ -67,7 +69,7 @@ namespace Abp.ZeroCore.SampleApp.EntityFramework
             modelBuilder.Entity<Advertisement>().OwnsMany(a => a.Feedbacks, b =>
             {
                 b.WithOwner().HasForeignKey(af => af.AdvertisementId);
-                b.Property<int>("Id");
+                b.Property<Guid>("Id");
                 b.HasKey("Id");
 
                 b.HasOne<Comment>()

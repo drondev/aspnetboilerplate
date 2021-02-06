@@ -1,9 +1,10 @@
+using System;
 using Abp.Localization;
 using Abp.NHibernate.EntityMappings;
 
 namespace Abp.Zero.NHibernate.EntityMappings
 {
-    public class ApplicationLanguageTextMap : EntityMap<ApplicationLanguageText, long>
+    public class ApplicationLanguageTextMap : EntityMap<ApplicationLanguageText, Guid>
     {
         public ApplicationLanguageTextMap()
             : base("AbpLanguageTexts")

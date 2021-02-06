@@ -1,4 +1,6 @@
-﻿using Abp.Configuration.Startup;
+using System;
+using System.Threading.Tasks;
+using Abp.Configuration.Startup;
 using Abp.Domain.Uow;
 using Abp.Extensions;
 using Abp.MultiTenancy;
@@ -63,7 +65,36 @@ namespace Abp.Zero.EntityFrameworkCore
             return tenantCacheItem.ConnectionString;
         }
 
-        protected virtual int? GetCurrentTenantId()
+
+        public override async Task<string> GetNameOrConnectionStringAsync(ConnectionStringResolveArgs args)
+        {
+            if (args.MultiTenancySide == MultiTenancySides.Host)
+            {
+                return await GetNameOrConnectionStringAsync(new DbPerTenantConnectionStringResolveArgs(null, args));
+            }
+
+            return await GetNameOrConnectionStringAsync(new DbPerTenantConnectionStringResolveArgs(GetCurrentTenantId(), args));
+        }
+
+        public virtual async Task<string> GetNameOrConnectionStringAsync(DbPerTenantConnectionStringResolveArgs args)
+        {
+            if (args.TenantId == null)
+            {
+                //Requested for host
+                return await base.GetNameOrConnectionStringAsync(args);
+            }
+
+            var tenantCacheItem = await _tenantCache.GetAsync(args.TenantId.Value);
+            if (tenantCacheItem.ConnectionString.IsNullOrEmpty())
+            {
+                //Tenant has not dedicated database
+                return await base.GetNameOrConnectionStringAsync(args);
+            }
+
+            return tenantCacheItem.ConnectionString;
+        }
+
+        protected virtual Guid? GetCurrentTenantId()
         {
             return _currentUnitOfWorkProvider.Current != null
                 ? _currentUnitOfWorkProvider.Current.GetTenantId()

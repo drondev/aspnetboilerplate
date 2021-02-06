@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Abp.EntityHistory
 {
     [Table("AbpEntityChangeSets")]
-    public class EntityChangeSet : Entity<long>, IHasCreationTime, IMayHaveTenant, IExtendableObject
+    public class EntityChangeSet : Entity<Guid>, IHasCreationTime, IMayHaveTenant, IExtendableObject
     {
         /// <summary>
         /// Maximum length of <see cref="BrowserInfo"/> property.
@@ -61,12 +61,12 @@ namespace Abp.EntityHistory
         /// <summary>
         /// ImpersonatorTenantId.
         /// </summary>
-        public virtual int? ImpersonatorTenantId { get; set; }
+        public virtual Guid? ImpersonatorTenantId { get; set; }
 
         /// <summary>
         /// ImpersonatorUserId.
         /// </summary>
-        public virtual long? ImpersonatorUserId { get; set; }
+        public virtual Guid? ImpersonatorUserId { get; set; }
 
         /// <summary>
         /// Reason for this change set.
@@ -77,12 +77,12 @@ namespace Abp.EntityHistory
         /// <summary>
         /// TenantId.
         /// </summary>
-        public virtual int? TenantId { get; set; }
+        public virtual Guid? TenantId { get; set; }
 
         /// <summary>
         /// UserId.
         /// </summary>
-        public virtual long? UserId { get; set; }
+        public virtual Guid? UserId { get; set; }
 
         /// <summary>
         /// Entity changes grouped in this change set.

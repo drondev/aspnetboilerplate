@@ -33,32 +33,34 @@ namespace Abp.Zero.EntityHistory
                 snapshot.ChangedPropertiesSnapshots.Count.ShouldBe(0);
                 snapshot.PropertyChangesStackTree.Count.ShouldBe(0);
 
-                uow.Complete();
+                await uow.CompleteAsync();
             }
 
             Thread.Sleep(3 * 1000);
+            
             using (var uow = Resolve<IUnitOfWorkManager>().Begin())
             {
-                var user = _userRepository.Get(id);
+                var user = await _userRepository.GetAsync(id);
                 user.Name = "test-user-name-updated";
                 user.Surname = "test-user-surname-updated";
                 
-                uow.Complete();
+                await uow.CompleteAsync();
             }
 
             Thread.Sleep(3 * 1000);
+            
             using (var uow = Resolve<IUnitOfWorkManager>().Begin())
             {
-                var user = _userRepository.Get(id);
+                var user = await _userRepository.GetAsync(id);
                 user.Name = "test-user-name-updated-2";
                 
-                uow.Complete();
+                await uow.CompleteAsync();
             }
 
             using (var uow = Resolve<IUnitOfWorkManager>().Begin())
             {
                 //undo last update
-                var snapshot = await _entitySnapshotManager.GetSnapshotAsync<UserTestEntity, int>(id, DateTime.Now.AddSeconds(-2));
+                var snapshot = await _entitySnapshotManager.GetSnapshotAsync<UserTestEntity, Guid>(id, DateTime.Now.AddSeconds(-2));
 
                 snapshot.ChangedPropertiesSnapshots.Count.ShouldBe(1);
                 snapshot.PropertyChangesStackTree.Count.ShouldBe(1);
@@ -76,6 +78,8 @@ namespace Abp.Zero.EntityHistory
                 snapshot2["Surname"].ShouldBe("\"test-user-surname-start\"");
                 snapshot2.PropertyChangesStackTree["Name"].ShouldBe("\"test-user-name-updated-2\" -> \"test-user-name-updated\" -> \"test-user-name-start\"");
                 snapshot2.PropertyChangesStackTree["Surname"].ShouldBe("\"test-user-surname-updated\" -> \"test-user-surname-start\"");
+                
+                await uow.CompleteAsync();
             }
         }
 

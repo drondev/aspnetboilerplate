@@ -1,5 +1,7 @@
-﻿using Abp.Authorization.Roles;
+﻿using System;
+using Abp.Authorization.Roles;
 using Abp.Authorization.Users;
+using Abp.Domain.Entities;
 using Abp.MultiTenancy;
 using Abp.Threading;
 
@@ -13,7 +15,7 @@ namespace Abp.Authorization
             string plainPassword, 
             string tenancyName = null, 
             bool shouldLockout = true)
-                where TTenant : AbpTenant<TUser>
+                where TTenant : AbpTenant<TUser>, IEntity<Guid>
                 where TRole : AbpRole<TUser>, new()
                 where TUser : AbpUser<TUser>
         {

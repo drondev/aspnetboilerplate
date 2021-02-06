@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Abp.Domain.Entities;
 
@@ -12,18 +13,18 @@ namespace Abp.DynamicEntityProperties
 
         public string EntityId { get; set; }
 
-        public int DynamicEntityPropertyId { get; set; }
+        public Guid DynamicEntityPropertyId { get; set; }
 
         public virtual DynamicEntityProperty DynamicEntityProperty { get; set; }
 
-        public int? TenantId { get; set; }
+        public Guid? TenantId { get; set; }
 
         public DynamicEntityPropertyValue()
         {
 
         }
 
-        public DynamicEntityPropertyValue(DynamicEntityProperty dynamicEntityProperty, string entityId, string value, int? tenantId)
+        public DynamicEntityPropertyValue(DynamicEntityProperty dynamicEntityProperty, string entityId, string value, Guid? tenantId)
         {
             DynamicEntityPropertyId = dynamicEntityProperty.Id;
             EntityId = entityId;

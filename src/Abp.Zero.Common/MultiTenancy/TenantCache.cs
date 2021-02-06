@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using Abp.Authorization.Users;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
@@ -13,12 +15,12 @@ namespace Abp.MultiTenancy
         where TUser : AbpUserBase
     {
         private readonly ICacheManager _cacheManager;
-        private readonly IRepository<TTenant> _tenantRepository;
+        private readonly IRepository<TTenant, Guid> _tenantRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         public TenantCache(
             ICacheManager cacheManager,
-            IRepository<TTenant> tenantRepository,
+            IRepository<TTenant, Guid> tenantRepository,
             IUnitOfWorkManager unitOfWorkManager)
         {
             _cacheManager = cacheManager;
@@ -26,7 +28,7 @@ namespace Abp.MultiTenancy
             _unitOfWorkManager = unitOfWorkManager;
         }
 
-        public virtual TenantCacheItem Get(int tenantId)
+        public virtual TenantCacheItem Get(Guid tenantId)
         {
             var cacheItem = GetOrNull(tenantId);
 
@@ -67,7 +69,7 @@ namespace Abp.MultiTenancy
             return Get(tenantId.Value);
         }
 
-        public TenantCacheItem GetOrNull(int tenantId)
+        public TenantCacheItem GetOrNull(Guid tenantId)
         {
             return _cacheManager
                 .GetTenantCache()
@@ -76,6 +78,64 @@ namespace Abp.MultiTenancy
                     () =>
                     {
                         var tenant = GetTenantOrNull(tenantId);
+                        if (tenant == null)
+                        {
+                            return null;
+                        }
+
+                        return CreateTenantCacheItem(tenant);
+                    }
+                );
+        }
+
+        public virtual async Task<TenantCacheItem> GetAsync(Guid tenantId)
+        {
+            var cacheItem = await GetOrNullAsync(tenantId);
+
+            if (cacheItem == null)
+            {
+                throw new AbpException("There is no tenant with given id: " + tenantId);
+            }
+
+            return cacheItem;
+        }
+
+        public virtual async Task<TenantCacheItem> GetAsync(string tenancyName)
+        {
+            var cacheItem = await GetOrNullAsync(tenancyName);
+
+            if (cacheItem == null)
+            {
+                throw new AbpException("There is no tenant with given tenancy name: " + tenancyName);
+            }
+
+            return cacheItem;
+        }
+
+        public virtual async Task<TenantCacheItem> GetOrNullAsync(string tenancyName)
+        {
+            var tenantId = await _cacheManager
+                .GetTenantByNameCache()
+                .GetAsync(
+                    tenancyName.ToLowerInvariant(), async key => (await GetTenantOrNullAsync(tenancyName))?.Id
+                );
+
+            if (tenantId == null)
+            {
+                return null;
+            }
+
+            return await GetAsync(tenantId.Value);
+        }
+
+        public virtual async Task<TenantCacheItem> GetOrNullAsync(Guid tenantId)
+        {
+            return await _cacheManager
+                .GetTenantCache()
+                .GetAsync(
+                    tenantId, async key =>
+                    {
+                        var tenant = await GetTenantOrNullAsync(tenantId);
                         if (tenant == null)
                         {
                             return null;
@@ -100,7 +160,7 @@ namespace Abp.MultiTenancy
         }
 
         [UnitOfWork]
-        protected virtual TTenant GetTenantOrNull(int tenantId)
+        protected virtual TTenant GetTenantOrNull(Guid tenantId)
         {
             using (_unitOfWorkManager.Current.SetTenantId(null))
             {
@@ -114,6 +174,24 @@ namespace Abp.MultiTenancy
             using (_unitOfWorkManager.Current.SetTenantId(null))
             {
                 return _tenantRepository.FirstOrDefault(t => t.TenancyName == tenancyName);
+            }
+        }
+
+        [UnitOfWork]
+        protected virtual async Task<TTenant> GetTenantOrNullAsync(Guid tenantId)
+        {
+            using (_unitOfWorkManager.Current.SetTenantId(null))
+            {
+                return await _tenantRepository.FirstOrDefaultAsync(tenantId);
+            }
+        }
+
+        [UnitOfWork]
+        protected virtual async Task<TTenant> GetTenantOrNullAsync(string tenancyName)
+        {
+            using (_unitOfWorkManager.Current.SetTenantId(null))
+            {
+                return await _tenantRepository.FirstOrDefaultAsync(t => t.TenancyName == tenancyName);
             }
         }
 

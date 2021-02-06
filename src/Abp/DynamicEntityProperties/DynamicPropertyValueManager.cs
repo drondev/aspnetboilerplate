@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Abp.Dependency;
 
@@ -16,27 +17,27 @@ namespace Abp.DynamicEntityProperties
             DynamicPropertyValueStore = NullDynamicPropertyValueStore.Instance;
         }
 
-        public virtual DynamicPropertyValue Get(int id)
+        public virtual DynamicPropertyValue Get(Guid id)
         {
             var val = DynamicPropertyValueStore.Get(id);
             _dynamicPropertyPermissionChecker.CheckPermission(val.DynamicPropertyId);
             return val;
         }
 
-        public virtual async Task<DynamicPropertyValue> GetAsync(int id)
+        public virtual async Task<DynamicPropertyValue> GetAsync(Guid id)
         {
             var val = await DynamicPropertyValueStore.GetAsync(id);
             await _dynamicPropertyPermissionChecker.CheckPermissionAsync(val.DynamicPropertyId);
             return val;
         }
 
-        public virtual List<DynamicPropertyValue> GetAllValuesOfDynamicProperty(int dynamicPropertyId)
+        public virtual List<DynamicPropertyValue> GetAllValuesOfDynamicProperty(Guid dynamicPropertyId)
         {
             _dynamicPropertyPermissionChecker.CheckPermission(dynamicPropertyId);
             return DynamicPropertyValueStore.GetAllValuesOfDynamicProperty(dynamicPropertyId);
         }
 
-        public virtual async Task<List<DynamicPropertyValue>> GetAllValuesOfDynamicPropertyAsync(int dynamicPropertyId)
+        public virtual async Task<List<DynamicPropertyValue>> GetAllValuesOfDynamicPropertyAsync(Guid dynamicPropertyId)
         {
             await _dynamicPropertyPermissionChecker.CheckPermissionAsync(dynamicPropertyId);
             return await DynamicPropertyValueStore.GetAllValuesOfDynamicPropertyAsync(dynamicPropertyId);
@@ -66,7 +67,7 @@ namespace Abp.DynamicEntityProperties
             await DynamicPropertyValueStore.UpdateAsync(dynamicPropertyValue);
         }
 
-        public virtual void Delete(int id)
+        public virtual void Delete(Guid id)
         {
             var val = Get(id);
             if (val != null)//Get checks permission, no need to check it again  
@@ -75,7 +76,7 @@ namespace Abp.DynamicEntityProperties
             }
         }
 
-        public virtual async Task DeleteAsync(int id)
+        public virtual async Task DeleteAsync(Guid id)
         {
             var val = await GetAsync(id);
             if (val != null)//Get checks permission, no need to check it again
@@ -84,13 +85,13 @@ namespace Abp.DynamicEntityProperties
             }
         }
 
-        public virtual void CleanValues(int dynamicPropertyId)
+        public virtual void CleanValues(Guid dynamicPropertyId)
         {
             _dynamicPropertyPermissionChecker.CheckPermission(dynamicPropertyId);
             DynamicPropertyValueStore.CleanValues(dynamicPropertyId);
         }
 
-        public virtual async Task CleanValuesAsync(int dynamicPropertyId)
+        public virtual async Task CleanValuesAsync(Guid dynamicPropertyId)
         {
             await _dynamicPropertyPermissionChecker.CheckPermissionAsync(dynamicPropertyId);
             await DynamicPropertyValueStore.CleanValuesAsync(dynamicPropertyId);

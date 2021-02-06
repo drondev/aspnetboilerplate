@@ -8,12 +8,12 @@ namespace Abp.AspNetCore.App.MultiTenancy
     {
         private readonly List<TenantInfo> _tenants = new List<TenantInfo>
         {
-            new TenantInfo(1, "Default"),
-            new TenantInfo(42, "acme"),
-            new TenantInfo(43, "vlsft")
+            new TenantInfo(1.ToGuid(), "Default"),
+            new TenantInfo(42.ToGuid(), "acme"),
+            new TenantInfo(43.ToGuid(), "vlsft")
         };
 
-        public TenantInfo Find(int tenantId)
+        public TenantInfo Find(Guid tenantId)
         {
             return _tenants.FirstOrDefault(t => t.Id == tenantId);
         }

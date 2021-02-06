@@ -48,9 +48,16 @@ namespace Abp.Domain.Repositories
 
         public abstract IQueryable<TEntity> GetAll();
 
+        public abstract Task<IQueryable<TEntity>> GetAllAsync();
+
         public virtual IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] propertySelectors)
         {
             return GetAll();
+        }
+
+        public virtual Task<IQueryable<TEntity>> GetAllIncludingAsync(params Expression<Func<TEntity, object>>[] propertySelectors)
+        {
+            return GetAllAsync();
         }
 
         public virtual List<TEntity> GetAllList()
@@ -288,5 +295,9 @@ namespace Abp.Domain.Repositories
 
             return Expression.Lambda<Func<TEntity, bool>>(lambdaBody, lambdaParam);
         }
+        
+        public abstract void BulkInsert(ICollection<TEntity> entities);
+
+        public abstract Task BulkInsertAsync(ICollection<TEntity> entities);
     }
 }

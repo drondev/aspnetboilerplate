@@ -1,4 +1,5 @@
-﻿using Abp.Application.Features;
+﻿using System;
+using Abp.Application.Features;
 using Abp.Domain.Entities;
 
 namespace Abp.MultiTenancy
@@ -22,7 +23,7 @@ namespace Abp.MultiTenancy
         /// <param name="tenantId">The tenant identifier.</param>
         /// <param name="name">Feature name.</param>
         /// <param name="value">Feature value.</param>
-        public TenantFeatureSetting(int tenantId, string name, string value)
+        public TenantFeatureSetting(Guid tenantId, string name, string value)
             :base(name, value)
         {
             TenantId = tenantId;

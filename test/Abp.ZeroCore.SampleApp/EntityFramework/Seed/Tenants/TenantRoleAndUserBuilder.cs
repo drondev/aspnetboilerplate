@@ -13,9 +13,9 @@ namespace Abp.ZeroCore.SampleApp.EntityFramework.Seed.Tenants
     public class TenantRoleAndUserBuilder
     {
         private readonly SampleAppDbContext _context;
-        private readonly int _tenantId;
+        private readonly Guid _tenantId;
 
-        public TenantRoleAndUserBuilder(SampleAppDbContext context, int tenantId)
+        public TenantRoleAndUserBuilder(SampleAppDbContext context, Guid tenantId)
         {
             _context = context;
             _tenantId = tenantId;

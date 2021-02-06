@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Abp.Application.Editions;
 using Abp.Authorization.Users;
 using Abp.Domain.Entities;
@@ -16,7 +17,7 @@ namespace Abp.MultiTenancy
         /// Current <see cref="Edition"/> of the Tenant.
         /// </summary>
         public virtual Edition Edition { get; set; }
-        public virtual int? EditionId { get; set; }
+        public virtual Guid? EditionId { get; set; }
 
         /// <summary>
         /// Reference to the creator user of this entity.

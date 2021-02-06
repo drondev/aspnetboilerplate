@@ -16,18 +16,19 @@ namespace Abp.Webhooks
     /// </summary>
     public class WebhookSendAttemptStore : IWebhookSendAttemptStore, ITransientDependency
     {
+        public IAsyncQueryableExecuter AsyncQueryableExecuter { get; set; }
+
         private readonly IRepository<WebhookSendAttempt, Guid> _webhookSendAttemptRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
-        private readonly IAsyncQueryableExecuter _asyncQueryableExecuter;
 
         public WebhookSendAttemptStore(
             IRepository<WebhookSendAttempt, Guid> webhookSendAttemptRepository,
-            IUnitOfWorkManager unitOfWorkManager,
-            IAsyncQueryableExecuter asyncQueryableExecuter)
+            IUnitOfWorkManager unitOfWorkManager)
         {
             _webhookSendAttemptRepository = webhookSendAttemptRepository;
             _unitOfWorkManager = unitOfWorkManager;
-            _asyncQueryableExecuter = asyncQueryableExecuter;
+
+            AsyncQueryableExecuter = NullAsyncQueryableExecuter.Instance;
         }
 
         [UnitOfWork]
@@ -71,7 +72,7 @@ namespace Abp.Webhooks
         }
 
         [UnitOfWork]
-        public virtual async Task<WebhookSendAttempt> GetAsync(int? tenantId, Guid id)
+        public virtual async Task<WebhookSendAttempt> GetAsync(Guid? tenantId, Guid id)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
@@ -80,7 +81,7 @@ namespace Abp.Webhooks
         }
 
         [UnitOfWork]
-        public virtual WebhookSendAttempt Get(int? tenantId, Guid id)
+        public virtual WebhookSendAttempt Get(Guid? tenantId, Guid id)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
@@ -89,7 +90,7 @@ namespace Abp.Webhooks
         }
 
         [UnitOfWork]
-        public virtual async Task<int> GetSendAttemptCountAsync(int? tenantId, Guid webhookId, Guid webhookSubscriptionId)
+        public virtual async Task<int> GetSendAttemptCountAsync(Guid? tenantId, Guid webhookId, Guid webhookSubscriptionId)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
@@ -102,7 +103,7 @@ namespace Abp.Webhooks
         }
 
         [UnitOfWork]
-        public virtual int GetSendAttemptCount(int? tenantId, Guid webhookId, Guid webhookSubscriptionId)
+        public virtual int GetSendAttemptCount(Guid? tenantId, Guid webhookId, Guid webhookSubscriptionId)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
@@ -114,7 +115,7 @@ namespace Abp.Webhooks
         }
 
         [UnitOfWork]
-        public async Task<bool> HasXConsecutiveFailAsync(int? tenantId, Guid subscriptionId, int failCount)
+        public async Task<bool> HasXConsecutiveFailAsync(Guid? tenantId, Guid subscriptionId, int failCount)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
@@ -123,7 +124,7 @@ namespace Abp.Webhooks
                     return false;
                 }
 
-                return !await _asyncQueryableExecuter.AnyAsync(
+                return !await AsyncQueryableExecuter.AnyAsync(
                     _webhookSendAttemptRepository.GetAll()
                         .OrderByDescending(attempt => attempt.CreationTime)
                         .Take(failCount)
@@ -133,7 +134,7 @@ namespace Abp.Webhooks
         }
 
         [UnitOfWork]
-        public bool HasXConsecutiveFail(int? tenantId, Guid subscriptionId, int failCount)
+        public bool HasXConsecutiveFail(Guid? tenantId, Guid subscriptionId, int failCount)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
@@ -151,7 +152,7 @@ namespace Abp.Webhooks
         }
 
         [UnitOfWork]
-        public async Task<IPagedResult<WebhookSendAttempt>> GetAllSendAttemptsBySubscriptionAsPagedListAsync(int? tenantId, Guid subscriptionId, int maxResultCount, int skipCount)
+        public async Task<IPagedResult<WebhookSendAttempt>> GetAllSendAttemptsBySubscriptionAsPagedListAsync(Guid? tenantId, Guid subscriptionId, int maxResultCount, int skipCount)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
@@ -160,9 +161,9 @@ namespace Abp.Webhooks
                         attempt.WebhookSubscriptionId == subscriptionId
                     );
 
-                var totalCount = await _asyncQueryableExecuter.CountAsync(query);
+                var totalCount = await AsyncQueryableExecuter.CountAsync(query);
 
-                var list = await _asyncQueryableExecuter.ToListAsync(query
+                var list = await AsyncQueryableExecuter.ToListAsync(query
                     .OrderByDescending(attempt => attempt.CreationTime)
                     .Skip(skipCount)
                     .Take(maxResultCount)
@@ -177,7 +178,7 @@ namespace Abp.Webhooks
         }
 
         [UnitOfWork]
-        public IPagedResult<WebhookSendAttempt> GetAllSendAttemptsBySubscriptionAsPagedList(int? tenantId, Guid subscriptionId, int maxResultCount, int skipCount)
+        public IPagedResult<WebhookSendAttempt> GetAllSendAttemptsBySubscriptionAsPagedList(Guid? tenantId, Guid subscriptionId, int maxResultCount, int skipCount)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
@@ -203,11 +204,11 @@ namespace Abp.Webhooks
         }
 
         [UnitOfWork]
-        public async Task<List<WebhookSendAttempt>> GetAllSendAttemptsByWebhookEventIdAsync(int? tenantId, Guid webhookEventId)
+        public async Task<List<WebhookSendAttempt>> GetAllSendAttemptsByWebhookEventIdAsync(Guid? tenantId, Guid webhookEventId)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
-                return await _asyncQueryableExecuter.ToListAsync(
+                return await AsyncQueryableExecuter.ToListAsync(
                     _webhookSendAttemptRepository.GetAll().Where(attempt => attempt.WebhookEventId == webhookEventId)
                         .OrderByDescending(attempt => attempt.CreationTime)
                 );
@@ -215,7 +216,7 @@ namespace Abp.Webhooks
         }
 
         [UnitOfWork]
-        public List<WebhookSendAttempt> GetAllSendAttemptsByWebhookEventId(int? tenantId, Guid webhookEventId)
+        public List<WebhookSendAttempt> GetAllSendAttemptsByWebhookEventId(Guid? tenantId, Guid webhookEventId)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {

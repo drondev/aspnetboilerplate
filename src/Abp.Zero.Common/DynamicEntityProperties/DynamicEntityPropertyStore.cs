@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Dependency;
@@ -18,12 +19,12 @@ namespace Abp.DynamicEntityProperties
             _asyncQueryableExecuter = asyncQueryableExecuter;
         }
 
-        public virtual DynamicEntityProperty Get(int id)
+        public virtual DynamicEntityProperty Get(Guid id)
         {
             return _dynamicEntityPropertyRepository.Get(id);
         }
 
-        public virtual Task<DynamicEntityProperty> GetAsync(int id)
+        public virtual Task<DynamicEntityProperty> GetAsync(Guid id)
         {
             return _dynamicEntityPropertyRepository.GetAsync(id);
         }
@@ -75,12 +76,12 @@ namespace Abp.DynamicEntityProperties
             return _dynamicEntityPropertyRepository.UpdateAsync(dynamicEntityProperty);
         }
 
-        public virtual void Delete(int id)
+        public virtual void Delete(Guid id)
         {
             _dynamicEntityPropertyRepository.Delete(id);
         }
 
-        public virtual Task DeleteAsync(int id)
+        public virtual Task DeleteAsync(Guid id)
         {
             return _dynamicEntityPropertyRepository.DeleteAsync(id);
         }

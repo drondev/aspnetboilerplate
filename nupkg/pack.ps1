@@ -7,6 +7,7 @@ $srcPath = Join-Path $slnPath "src"
 $projects = (
     "Abp",
     "Abp.AspNetCore",
+    "Abp.AspNetCore.OData",
     "Abp.AspNetCore.SignalR",
     "Abp.AspNetCore.TestBase",
     "Abp.AutoMapper",
@@ -49,7 +50,8 @@ $projects = (
     "Abp.ZeroCore.IdentityServer4",
     "Abp.ZeroCore.IdentityServer4.EntityFrameworkCore",
     "Abp.ZeroCore.IdentityServer4.vNext",
-    "Abp.ZeroCore.IdentityServer4.vNext.EntityFrameworkCore"
+    "Abp.ZeroCore.IdentityServer4.vNext.EntityFrameworkCore",
+    "Abp.AspNetCore.PerRequestRedisCache"
 )
 
 # Rebuild solution

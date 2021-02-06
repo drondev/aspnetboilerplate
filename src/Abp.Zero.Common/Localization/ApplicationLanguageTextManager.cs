@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace Abp.Localization
     public class ApplicationLanguageTextManager : IApplicationLanguageTextManager, ITransientDependency
     {
         private readonly ILocalizationManager _localizationManager;
-        private readonly IRepository<ApplicationLanguageText, long> _applicationTextRepository;
+        private readonly IRepository<ApplicationLanguageText, Guid> _applicationTextRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         /// <summary>
@@ -23,7 +24,7 @@ namespace Abp.Localization
         /// </summary>
         public ApplicationLanguageTextManager(
             ILocalizationManager localizationManager,
-            IRepository<ApplicationLanguageText, long> applicationTextRepository,
+            IRepository<ApplicationLanguageText, Guid> applicationTextRepository,
             IUnitOfWorkManager unitOfWorkManager)
         {
             _localizationManager = localizationManager;
@@ -39,7 +40,7 @@ namespace Abp.Localization
         /// <param name="culture">Culture</param>
         /// <param name="key">Localization key</param>
         /// <param name="tryDefaults">True: fallbacks to default languages if can not find in given culture</param>
-        public string GetStringOrNull(int? tenantId, string sourceName, CultureInfo culture, string key, bool tryDefaults = true)
+        public string GetStringOrNull(Guid? tenantId, string sourceName, CultureInfo culture, string key, bool tryDefaults = true)
         {
             var source = _localizationManager.GetSource(sourceName);
 
@@ -53,7 +54,7 @@ namespace Abp.Localization
                 .GetStringOrNull(tenantId, key, culture, tryDefaults);
         }
 
-        public List<string> GetStringsOrNull(int? tenantId, string sourceName, CultureInfo culture, List<string> keys, bool tryDefaults = true)
+        public List<string> GetStringsOrNull(Guid? tenantId, string sourceName, CultureInfo culture, List<string> keys, bool tryDefaults = true)
         {
             var source = _localizationManager.GetSource(sourceName);
 
@@ -76,7 +77,7 @@ namespace Abp.Localization
         /// <param name="key">Localization key</param>
         /// <param name="value">New localized value.</param>
         [UnitOfWork]
-        public virtual async Task UpdateStringAsync(int? tenantId, string sourceName, CultureInfo culture, string key, string value)
+        public virtual async Task UpdateStringAsync(Guid? tenantId, string sourceName, CultureInfo culture, string key, string value)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {

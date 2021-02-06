@@ -1,4 +1,5 @@
-﻿using Abp.Authorization;
+﻿using System;
+using Abp.Authorization;
 using Abp.Authorization.Roles;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
@@ -17,8 +18,8 @@ namespace Abp.Zero.SampleApp.Roles
             IRoleManagementConfig roleManagementConfig,
             ICacheManager cacheManager,
             IUnitOfWorkManager unitOfWorkManager,
-            IRepository<OrganizationUnit, long> organizationUnitRepository,
-            IRepository<OrganizationUnitRole, long> organizationUnitRoleRepository)
+            IRepository<OrganizationUnit, Guid> organizationUnitRepository,
+            IRepository<OrganizationUnitRole, Guid> organizationUnitRoleRepository)
             : base(
             store,
             permissionManager,

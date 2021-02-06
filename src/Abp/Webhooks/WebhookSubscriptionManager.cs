@@ -41,19 +41,19 @@ namespace Abp.Webhooks
             return WebhookSubscriptionsStore.Get(id).ToWebhookSubscription();
         }
 
-        public async Task<List<WebhookSubscription>> GetAllSubscriptionsAsync(int? tenantId)
+        public async Task<List<WebhookSubscription>> GetAllSubscriptionsAsync(Guid? tenantId)
         {
             return (await WebhookSubscriptionsStore.GetAllSubscriptionsAsync(tenantId))
                 .Select(subscriptionInfo => subscriptionInfo.ToWebhookSubscription()).ToList();
         }
 
-        public List<WebhookSubscription> GetAllSubscriptions(int? tenantId)
+        public List<WebhookSubscription> GetAllSubscriptions(Guid? tenantId)
         {
             return WebhookSubscriptionsStore.GetAllSubscriptions(tenantId)
-            .Select(subscriptionInfo => subscriptionInfo.ToWebhookSubscription()).ToList();
+                .Select(subscriptionInfo => subscriptionInfo.ToWebhookSubscription()).ToList();
         }
 
-        public async Task<List<WebhookSubscription>> GetAllSubscriptionsIfFeaturesGrantedAsync(int? tenantId, string webhookName)
+        public async Task<List<WebhookSubscription>> GetAllSubscriptionsIfFeaturesGrantedAsync(Guid? tenantId, string webhookName)
         {
             if (!await _webhookDefinitionManager.IsAvailableAsync(tenantId, webhookName))
             {
@@ -64,7 +64,7 @@ namespace Abp.Webhooks
                 .Select(subscriptionInfo => subscriptionInfo.ToWebhookSubscription()).ToList();
         }
 
-        public List<WebhookSubscription> GetAllSubscriptionsIfFeaturesGranted(int? tenantId, string webhookName)
+        public List<WebhookSubscription> GetAllSubscriptionsIfFeaturesGranted(Guid? tenantId, string webhookName)
         {
             if (!_webhookDefinitionManager.IsAvailable(tenantId, webhookName))
             {
@@ -75,7 +75,7 @@ namespace Abp.Webhooks
                 .Select(subscriptionInfo => subscriptionInfo.ToWebhookSubscription()).ToList();
         }
 
-        public async Task<bool> IsSubscribedAsync(int? tenantId, string webhookName)
+        public async Task<bool> IsSubscribedAsync(Guid? tenantId, string webhookName)
         {
             if (!await _webhookDefinitionManager.IsAvailableAsync(tenantId, webhookName))
             {
@@ -85,7 +85,7 @@ namespace Abp.Webhooks
             return await WebhookSubscriptionsStore.IsSubscribedAsync(tenantId, webhookName);
         }
 
-        public bool IsSubscribed(int? tenantId, string webhookName)
+        public bool IsSubscribed(Guid? tenantId, string webhookName)
         {
             if (!_webhookDefinitionManager.IsAvailable(tenantId, webhookName))
             {
@@ -152,6 +152,18 @@ namespace Abp.Webhooks
         }
 
         [UnitOfWork]
+        public Task DeleteSubscriptionAsync(Guid id)
+        {
+            return WebhookSubscriptionsStore.DeleteAsync(id);
+        }
+
+        [UnitOfWork]
+        public void DeleteSubscription(Guid id)
+        {
+            WebhookSubscriptionsStore.Delete(id);
+        }
+
+        [UnitOfWork]
         public async Task AddWebhookAsync(WebhookSubscriptionInfo subscription, string webhookName)
         {
             await CheckPermissionsAsync(subscription.TenantId, webhookName);
@@ -182,7 +194,7 @@ namespace Abp.Webhooks
             }
         }
 
-        private async Task CheckPermissionsAsync(int? tenantId, string webhookName)
+        private async Task CheckPermissionsAsync(Guid? tenantId, string webhookName)
         {
             if (!await _webhookDefinitionManager.IsAvailableAsync(tenantId, webhookName))
             {
@@ -203,14 +215,13 @@ namespace Abp.Webhooks
             }
         }
 
-        private void CheckPermissions(int? tenantId, string webhookName)
+        private void CheckPermissions(Guid? tenantId, string webhookName)
         {
             if (!_webhookDefinitionManager.IsAvailable(tenantId, webhookName))
             {
                 throw new AbpAuthorizationException($"Tenant \"{tenantId}\" must have necessary feature(s) to use webhook \"{webhookName}\"");
             }
         }
-
 
         #endregion
     }

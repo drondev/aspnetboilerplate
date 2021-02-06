@@ -1,12 +1,14 @@
-﻿namespace Abp.Runtime.Session
+﻿using System;
+
+namespace Abp.Runtime.Session
 {
     public class SessionOverride
     {
-        public long? UserId { get; }
+        public Guid? UserId { get; }
 
-        public int? TenantId { get; }
+        public Guid? TenantId { get; }
 
-        public SessionOverride(int? tenantId, long? userId)
+        public SessionOverride(Guid? tenantId, Guid? userId)
         {
             TenantId = tenantId;
             UserId = userId;

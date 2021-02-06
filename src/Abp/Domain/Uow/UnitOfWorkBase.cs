@@ -83,13 +83,13 @@ namespace Abp.Domain.Uow
         /// </summary>
         private Exception _exception;
 
-        private int? _tenantId;
+        private Guid? _tenantId;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         protected UnitOfWorkBase(
-            IConnectionStringResolver connectionStringResolver, 
+            IConnectionStringResolver connectionStringResolver,
             IUnitOfWorkDefaultOptions defaultOptions,
             IUnitOfWorkFilterExecuter filterExecuter)
         {
@@ -206,12 +206,12 @@ namespace Abp.Domain.Uow
             });
         }
 
-        public virtual IDisposable SetTenantId(int? tenantId)
+        public virtual IDisposable SetTenantId(Guid? tenantId)
         {
             return SetTenantId(tenantId, true);
         }
 
-        public virtual IDisposable SetTenantId(int? tenantId, bool switchMustHaveTenantEnableDisable)
+        public virtual IDisposable SetTenantId(Guid? tenantId, bool switchMustHaveTenantEnableDisable)
         {
             var oldTenantId = _tenantId;
             _tenantId = tenantId;
@@ -230,7 +230,7 @@ namespace Abp.Domain.Uow
             }
 
             var mayHaveTenantChange = SetFilterParameter(AbpDataFilters.MayHaveTenant, AbpDataFilters.Parameters.TenantId, tenantId);
-            var mustHaveTenantChange = SetFilterParameter(AbpDataFilters.MustHaveTenant, AbpDataFilters.Parameters.TenantId, tenantId ?? 0);
+            var mustHaveTenantChange = SetFilterParameter(AbpDataFilters.MustHaveTenant, AbpDataFilters.Parameters.TenantId, tenantId == Guid.Empty);
 
             return new DisposeAction(() =>
             {
@@ -241,7 +241,7 @@ namespace Abp.Domain.Uow
             });
         }
 
-        public int? GetTenantId()
+        public Guid? GetTenantId()
         {
             return _tenantId;
         }
@@ -304,7 +304,7 @@ namespace Abp.Domain.Uow
         /// </summary>
         protected virtual void BeginUow()
         {
-            
+
         }
 
         /// <summary>
@@ -340,6 +340,11 @@ namespace Abp.Domain.Uow
         protected virtual string ResolveConnectionString(ConnectionStringResolveArgs args)
         {
             return ConnectionStringResolver.GetNameOrConnectionString(args);
+        }
+
+        protected virtual async Task<string> ResolveConnectionStringAsync(ConnectionStringResolveArgs args)
+        {
+            return await ConnectionStringResolver.GetNameOrConnectionStringAsync(args);
         }
 
         /// <summary>

@@ -40,6 +40,11 @@ namespace Abp.NHibernate.Repositories
             return Session.Query<TEntity>();
         }
 
+        public override Task<IQueryable<TEntity>> GetAllAsync()
+        {
+            return Task.FromResult(Session.Query<TEntity>());
+        }
+
         public override IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] propertySelectors)
         {
             if (propertySelectors.IsNullOrEmpty())
@@ -97,6 +102,16 @@ namespace Abp.NHibernate.Repositories
         {
             Session.Save(entity);
             return entity;
+        }
+
+        public override void BulkInsert(ICollection<TEntity> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task BulkInsertAsync(ICollection<TEntity> entities)
+        {
+            throw new NotImplementedException();
         }
 
         public override async Task<TEntity> InsertAsync(TEntity entity)

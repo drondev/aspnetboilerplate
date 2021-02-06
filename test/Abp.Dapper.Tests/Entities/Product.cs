@@ -23,7 +23,7 @@ namespace Abp.Dapper.Tests.Entities
         
         public Status Status { get; set; }
 
-        public int? TenantId { get; set; }
+        public Guid? TenantId { get; set; }
     }
 
     public enum Status

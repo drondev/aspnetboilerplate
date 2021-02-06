@@ -18,7 +18,7 @@ namespace Abp.Zero.TestData
         private readonly SampleAppDbContext _context;
         private readonly int _tenantId;
 
-        public TestOrganizationUnitsBuilder(SampleAppDbContext context, int tenantId)
+        public TestOrganizationUnitsBuilder(SampleAppDbContext context, Guid tenantId)
         {
             _context = context;
             _tenantId = tenantId;

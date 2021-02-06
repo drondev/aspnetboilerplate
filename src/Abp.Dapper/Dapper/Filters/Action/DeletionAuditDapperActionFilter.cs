@@ -1,4 +1,5 @@
-﻿using Abp.Domain.Entities;
+﻿using System;
+using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using Abp.Extensions;
 using Abp.Timing;
@@ -26,7 +27,7 @@ namespace Abp.Dapper.Filters.Action
 
             if (entity is IDeletionAudited)
             {
-                long? userId = GetAuditUserId();
+                Guid? userId = GetAuditUserId();
                 var record = entity.As<IDeletionAudited>();
 
                 if (record.DeleterUserId != null)

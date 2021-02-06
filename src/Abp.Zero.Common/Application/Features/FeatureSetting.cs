@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Abp.Domain.Entities;
@@ -11,7 +12,7 @@ namespace Abp.Application.Features
     /// </summary>
     [Table("AbpFeatures")]
     [MultiTenancySide(MultiTenancySides.Host)]
-    public abstract class FeatureSetting : CreationAuditedEntity<long>, IMayHaveTenant
+    public abstract class FeatureSetting : CreationAuditedEntity<Guid>, IMayHaveTenant
     {
         /// <summary>
         /// Maximum length of the <see cref="Name"/> field.
@@ -23,7 +24,7 @@ namespace Abp.Application.Features
         /// </summary>
         public const int MaxValueLength = 2000;
 
-        public virtual int? TenantId { get; set; }
+        public virtual Guid? TenantId { get; set; }
 
         /// <summary>
         /// Feature name.

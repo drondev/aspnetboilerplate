@@ -1,3 +1,4 @@
+using System;
 using Abp.Dependency;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
@@ -13,11 +14,11 @@ namespace Abp.Authorization.Users
         IEventHandler<EntityDeletedEventData<AbpUserBase>>, 
         ITransientDependency
     {
-        private readonly IRepository<UserOrganizationUnit, long> _userOrganizationUnitRepository;
+        private readonly IRepository<UserOrganizationUnit, Guid> _userOrganizationUnitRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         public UserOrganizationUnitRemover(
-            IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository, 
+            IRepository<UserOrganizationUnit, Guid> userOrganizationUnitRepository, 
             IUnitOfWorkManager unitOfWorkManager)
         {
             _userOrganizationUnitRepository = userOrganizationUnitRepository;

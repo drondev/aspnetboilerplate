@@ -16,16 +16,16 @@ namespace Abp.Authorization.Users
         where TTenant : AbpTenant<TUser>
         where TUser : AbpUserBase
     {
-        private readonly IRepository<UserToken, long> _userTokenRepository;
-        private readonly IRepository<TTenant> _tenantRepository;
+        private readonly IRepository<UserToken, Guid> _userTokenRepository;
+        private readonly IRepository<TTenant, Guid> _tenantRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         public UserTokenExpirationWorker(
             AbpTimer timer,
-            IRepository<UserToken, long> userTokenRepository,
+            IRepository<UserToken, Guid> userTokenRepository,
             IBackgroundJobConfiguration backgroundJobConfiguration,
             IUnitOfWorkManager unitOfWorkManager,
-            IRepository<TTenant> tenantRepository)
+            IRepository<TTenant, Guid> tenantRepository)
             : base(timer)
         {
             _userTokenRepository = userTokenRepository;
@@ -39,7 +39,7 @@ namespace Abp.Authorization.Users
 
         protected override void DoWork()
         {
-            List<int> tenantIds;
+            List<Guid> tenantIds;
             var utcNow = Clock.Now.ToUniversalTime();
 
             using (var uow = _unitOfWorkManager.Begin())

@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
 using MongoDB.Driver;
@@ -10,8 +13,8 @@ namespace Abp.MongoDb.Repositories
     /// Implements IRepository for MongoDB.
     /// </summary>
     /// <typeparam name="TEntity">Type of the Entity for this repository</typeparam>
-    public class MongoDbRepositoryBase<TEntity> : MongoDbRepositoryBase<TEntity, int>, IRepository<TEntity>
-        where TEntity : class, IEntity<int>
+    public class MongoDbRepositoryBase<TEntity> : MongoDbRepositoryBase<TEntity, Guid>, IRepository<TEntity>
+        where TEntity : class, IEntity<Guid>
     {
         public MongoDbRepositoryBase(IMongoDatabaseProvider databaseProvider)
             : base(databaseProvider)
@@ -52,6 +55,11 @@ namespace Abp.MongoDb.Repositories
             return Collection.AsQueryable();
         }
 
+        public override Task<IQueryable<TEntity>> GetAllAsync()
+        {
+            return Task.FromResult(Collection.AsQueryable());
+        }
+
         public override TEntity Get(TPrimaryKey id)
         {
             var query = MongoDB.Driver.Builders.Query<TEntity>.EQ(e => e.Id, id);
@@ -75,6 +83,18 @@ namespace Abp.MongoDb.Repositories
             Collection.Insert(entity);
             return entity;
         }
+
+        //todo: implement this for mongo and then move project in general to use this module
+        public override void BulkInsert(ICollection<TEntity> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task BulkInsertAsync(ICollection<TEntity> entities)
+        {
+            throw new NotImplementedException();
+        }
+
         public override TEntity Update(TEntity entity)
         {
             Collection.Save(entity);

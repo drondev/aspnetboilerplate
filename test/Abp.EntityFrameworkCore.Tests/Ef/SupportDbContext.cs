@@ -21,7 +21,7 @@ namespace Abp.EntityFrameworkCore.Tests.Ef
     {
         public DbSet<Ticket> Tickets { get; set; }
 
-        public DbQuery<TicketListItem> TicketListItems { get; set; }
+        public DbSet<TicketListItem> TicketListItems { get; set; }
 
         public const string TicketViewSql = @"CREATE VIEW TicketListItemView AS SELECT Id, EmailAddress, TenantId, IsActive FROM Tickets";
 
@@ -35,7 +35,7 @@ namespace Abp.EntityFrameworkCore.Tests.Ef
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Query<TicketListItem>().ToView("TicketListItemView");
+            modelBuilder.Entity<TicketListItem>().HasNoKey().ToView("TicketListItemView");
         }
     }
 
@@ -46,8 +46,8 @@ namespace Abp.EntityFrameworkCore.Tests.Ef
         List<TEntity> GetActiveList();
     }
 
-    public interface ISupportRepository<TEntity> : ISupportRepository<TEntity, int>, IRepository<TEntity>
-        where TEntity : class, IEntity<int>
+    public interface ISupportRepository<TEntity> : ISupportRepository<TEntity, Guid>, IRepository<TEntity>
+        where TEntity : class, IEntity<Guid>
     {
 
     }
@@ -84,8 +84,8 @@ namespace Abp.EntityFrameworkCore.Tests.Ef
         }
     }
 
-    public class SupportRepositoryBase<TEntity> : SupportRepositoryBase<TEntity, int>, ISupportRepository<TEntity>
-        where TEntity : class, IEntity<int>
+    public class SupportRepositoryBase<TEntity> : SupportRepositoryBase<TEntity, Guid>, ISupportRepository<TEntity>
+        where TEntity : class, IEntity<Guid>
     {
         public SupportRepositoryBase(IDbContextProvider<SupportDbContext> dbContextProvider)
             : base(dbContextProvider)

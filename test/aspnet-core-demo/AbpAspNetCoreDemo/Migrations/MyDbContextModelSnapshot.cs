@@ -1,3 +1,4 @@
+using System;
 using AbpAspNetCoreDemo.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -16,7 +17,7 @@ namespace AbpAspNetCoreDemo.Migrations
 
             modelBuilder.Entity("AbpAspNetCoreDemo.Core.Domain.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name")

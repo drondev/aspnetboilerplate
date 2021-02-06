@@ -1,4 +1,5 @@
-﻿using Abp.Application.Features;
+﻿using System;
+using Abp.Application.Features;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.MultiTenancy;
@@ -11,9 +12,9 @@ namespace Abp.Zero.SampleApp.Features
     public class FeatureValueStore : AbpFeatureValueStore<Tenant, User>
     {
         public FeatureValueStore(ICacheManager cacheManager,
-            IRepository<TenantFeatureSetting, long> tenantFeatureRepository,
+            IRepository<TenantFeatureSetting, Guid> tenantFeatureRepository,
             IRepository<Tenant> tenantRepository,
-            IRepository<EditionFeatureSetting, long> editionFeatureRepository,
+            IRepository<EditionFeatureSetting, Guid> editionFeatureRepository,
             IFeatureManager featureManager,
             IUnitOfWorkManager unitOfWorkManager)
             : base(

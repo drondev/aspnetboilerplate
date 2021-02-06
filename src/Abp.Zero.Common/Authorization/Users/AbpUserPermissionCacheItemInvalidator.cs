@@ -1,3 +1,4 @@
+using System;
 using Abp.Dependency;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
@@ -17,12 +18,12 @@ namespace Abp.Authorization.Users
         ITransientDependency
     {
         private readonly ICacheManager _cacheManager;
-        private readonly IRepository<UserOrganizationUnit, long> _userOrganizationUnitRepository;
+        private readonly IRepository<UserOrganizationUnit, Guid> _userOrganizationUnitRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         public AbpUserPermissionCacheItemInvalidator(
             ICacheManager cacheManager, 
-            IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository, 
+            IRepository<UserOrganizationUnit, Guid> userOrganizationUnitRepository, 
             IUnitOfWorkManager unitOfWorkManager)
         {
             _cacheManager = cacheManager;
@@ -32,25 +33,25 @@ namespace Abp.Authorization.Users
 
         public void HandleEvent(EntityChangedEventData<UserPermissionSetting> eventData)
         {
-            var cacheKey = eventData.Entity.UserId + "@" + (eventData.Entity.TenantId ?? 0);
+            var cacheKey = eventData.Entity.UserId + "@" + (eventData.Entity.TenantId ?? Guid.Empty);
             _cacheManager.GetUserPermissionCache().Remove(cacheKey);
         }
 
         public void HandleEvent(EntityChangedEventData<UserRole> eventData)
         {
-            var cacheKey = eventData.Entity.UserId + "@" + (eventData.Entity.TenantId ?? 0);
+            var cacheKey = eventData.Entity.UserId + "@" + (eventData.Entity.TenantId ?? Guid.Empty);
             _cacheManager.GetUserPermissionCache().Remove(cacheKey);
         }
 
         public void HandleEvent(EntityChangedEventData<UserOrganizationUnit> eventData)
         {
-            var cacheKey = eventData.Entity.UserId + "@" + (eventData.Entity.TenantId ?? 0);
+            var cacheKey = eventData.Entity.UserId + "@" + (eventData.Entity.TenantId ?? Guid.Empty);
             _cacheManager.GetUserPermissionCache().Remove(cacheKey);
         }
 
         public void HandleEvent(EntityDeletedEventData<AbpUserBase> eventData)
         {
-            var cacheKey = eventData.Entity.Id + "@" + (eventData.Entity.TenantId ?? 0);
+            var cacheKey = eventData.Entity.Id + "@" + (eventData.Entity.TenantId ?? Guid.Empty);
             _cacheManager.GetUserPermissionCache().Remove(cacheKey);
         }
 
@@ -65,7 +66,7 @@ namespace Abp.Authorization.Users
 
                 foreach (var userOrganizationUnit in users)
                 {
-                    var cacheKey = userOrganizationUnit.UserId + "@" + (eventData.Entity.TenantId ?? 0);
+                    var cacheKey = userOrganizationUnit.UserId + "@" + (eventData.Entity.TenantId ?? Guid.Empty);
                     _cacheManager.GetUserPermissionCache().Remove(cacheKey);
                 }
             }

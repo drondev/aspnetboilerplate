@@ -9,6 +9,7 @@ using Abp.Authorization.Users;
 using Abp.Configuration;
 using Abp.Configuration.Startup;
 using Abp.Dependency;
+using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Extensions;
@@ -21,18 +22,18 @@ using Microsoft.AspNet.Identity;
 namespace Abp.Authorization
 {
     public abstract class AbpLogInManager<TTenant, TRole, TUser> : ITransientDependency
-        where TTenant : AbpTenant<TUser>
+        where TTenant : AbpTenant<TUser>, IEntity<Guid>
         where TRole : AbpRole<TUser>, new()
         where TUser : AbpUser<TUser>
     {
         public IClientInfoProvider ClientInfoProvider { get; set; }
 
         protected IMultiTenancyConfig MultiTenancyConfig { get; }
-        protected IRepository<TTenant> TenantRepository { get; }
+        protected IRepository<TTenant, Guid> TenantRepository { get; }
         protected IUnitOfWorkManager UnitOfWorkManager { get; }
         protected AbpUserManager<TRole, TUser> UserManager { get; }
         protected ISettingManager SettingManager { get; }
-        protected IRepository<UserLoginAttempt, long> UserLoginAttemptRepository { get; }
+        protected IRepository<UserLoginAttempt, Guid> UserLoginAttemptRepository { get; }
         protected IUserManagementConfig UserManagementConfig { get; }
         protected IIocResolver IocResolver { get; }
         protected AbpRoleManager<TRole, TUser> RoleManager { get; }
@@ -40,10 +41,10 @@ namespace Abp.Authorization
         protected AbpLogInManager(
             AbpUserManager<TRole, TUser> userManager,
             IMultiTenancyConfig multiTenancyConfig,
-            IRepository<TTenant> tenantRepository,
+            IRepository<TTenant, Guid> tenantRepository,
             IUnitOfWorkManager unitOfWorkManager,
             ISettingManager settingManager,
-            IRepository<UserLoginAttempt, long> userLoginAttemptRepository,
+            IRepository<UserLoginAttempt, Guid> userLoginAttemptRepository,
             IUserManagementConfig userManagementConfig,
             IIocResolver iocResolver,
             AbpRoleManager<TRole, TUser> roleManager)
@@ -96,7 +97,7 @@ namespace Abp.Authorization
                 }
             }
 
-            int? tenantId = tenant == null ? (int?)null : tenant.Id;
+            Guid? tenantId = tenant == null ? (Guid?)null : tenant.Id;
             using (UnitOfWorkManager.Current.SetTenantId(tenantId))
             {
                 var user = await UserManager.AbpStore.FindAsync(tenantId, login);
@@ -152,7 +153,7 @@ namespace Abp.Authorization
                 }
             }
 
-            var tenantId = tenant == null ? (int?)null : tenant.Id;
+            var tenantId = tenant == null ? (Guid?)null : tenant.Id;
             using (UnitOfWorkManager.Current.SetTenantId(tenantId))
             {
                 //TryLoginFromExternalAuthenticationSources method may create the user, that's why we are calling it before AbpStore.FindByNameOrEmailAsync
@@ -231,7 +232,7 @@ namespace Abp.Authorization
         {
             using (var uow = UnitOfWorkManager.Begin(TransactionScopeOption.Suppress))
             {
-                var tenantId = loginResult.Tenant != null ? loginResult.Tenant.Id : (int?)null;
+                var tenantId = loginResult.Tenant != null ? loginResult.Tenant.Id : (Guid?)null;
                 using (UnitOfWorkManager.Current.SetTenantId(tenantId))
                 {
                     var loginAttempt = new UserLoginAttempt
@@ -239,7 +240,7 @@ namespace Abp.Authorization
                         TenantId = tenantId,
                         TenancyName = tenancyName,
 
-                        UserId = loginResult.User != null ? loginResult.User.Id : (long?)null,
+                        UserId = loginResult.User != null ? loginResult.User.Id : (Guid?)null,
                         UserNameOrEmailAddress = userNameOrEmailAddress,
 
                         Result = loginResult.Result,
@@ -257,7 +258,7 @@ namespace Abp.Authorization
             }
         }
 
-        protected virtual async Task<bool> TryLockOutAsync(int? tenantId, long userId)
+        protected virtual async Task<bool> TryLockOutAsync(Guid? tenantId, Guid userId)
         {
             using (var uow = UnitOfWorkManager.Begin(TransactionScopeOption.Suppress))
             {
@@ -289,7 +290,7 @@ namespace Abp.Authorization
                 {
                     if (await source.Object.TryAuthenticateAsync(userNameOrEmailAddress, plainPassword, tenant))
                     {
-                        var tenantId = tenant == null ? (int?)null : tenant.Id;
+                        var tenantId = tenant == null ? (Guid?)null : tenant.Id;
                         using (UnitOfWorkManager.Current.SetTenantId(tenantId))
                         {
                             var user = await UserManager.AbpStore.FindByNameOrEmailAsync(tenantId, userNameOrEmailAddress);
@@ -344,7 +345,7 @@ namespace Abp.Authorization
             return tenant;
         }
 
-        protected virtual async Task<bool> IsEmailConfirmationRequiredForLoginAsync(int? tenantId)
+        protected virtual async Task<bool> IsEmailConfirmationRequiredForLoginAsync(Guid? tenantId)
         {
             if (tenantId.HasValue)
             {

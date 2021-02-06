@@ -16,7 +16,7 @@ using Microsoft.Owin.Security;
 
 namespace Abp.Authorization
 {
-    public abstract class AbpSignInManager<TTenant, TRole, TUser> : SignInManager<TUser, long>, ITransientDependency
+    public abstract class AbpSignInManager<TTenant, TRole, TUser> : SignInManager<TUser, Guid>, ITransientDependency
         where TTenant : AbpTenant<TUser>
         where TRole : AbpRole<TUser>, new()
         where TUser : AbpUser<TUser>
@@ -137,7 +137,7 @@ namespace Abp.Authorization
             }
         }
 
-        public virtual async Task<int?> GetVerifiedTenantIdAsync()
+        public virtual async Task<Guid?> GetVerifiedTenantIdAsync()
         {
             var authenticateResult = await AuthenticationManager.AuthenticateAsync(
                 DefaultAuthenticationTypes.TwoFactorCookie
@@ -146,7 +146,7 @@ namespace Abp.Authorization
             return authenticateResult?.Identity?.GetTenantId();
         }
 
-        private bool IsTrue(string settingName, int? tenantId)
+        private bool IsTrue(string settingName, Guid? tenantId)
         {
             return tenantId == null
                 ? _settingManager.GetSettingValueForApplication<bool>(settingName)

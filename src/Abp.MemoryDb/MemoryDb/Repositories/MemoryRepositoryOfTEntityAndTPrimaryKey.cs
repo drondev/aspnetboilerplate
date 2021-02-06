@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
 
@@ -27,6 +28,11 @@ namespace Abp.MemoryDb.Repositories
             return Table.AsQueryable();
         }
 
+        public override Task<IQueryable<TEntity>> GetAllAsync()
+        {
+            return Task.FromResult(Table.AsQueryable());
+        }
+
         public override TEntity Insert(TEntity entity)
         {
             if (entity.IsTransient())
@@ -36,6 +42,16 @@ namespace Abp.MemoryDb.Repositories
 
             Table.Add(entity);
             return entity;
+        }
+
+        public override void BulkInsert(ICollection<TEntity> entities)
+        {
+            Table.AddRange(entities);
+        }
+
+        public override async Task BulkInsertAsync(ICollection<TEntity> entities)
+        {
+            Table.AddRange(entities);
         }
 
         public override TEntity Update(TEntity entity)

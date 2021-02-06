@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Domain.Entities;
@@ -8,11 +9,11 @@ using Abp.Linq;
 namespace Abp.Application.Services
 {
     public abstract class AsyncCrudAppService<TEntity, TEntityDto>
-        : AsyncCrudAppService<TEntity, TEntityDto, int>
-        where TEntity : class, IEntity<int>
-        where TEntityDto : IEntityDto<int>
+        : AsyncCrudAppService<TEntity, TEntityDto, Guid>
+        where TEntity : class, IEntity<Guid>
+        where TEntityDto : IEntityDto<Guid>
     {
-        protected AsyncCrudAppService(IRepository<TEntity, int> repository)
+        protected AsyncCrudAppService(IRepository<TEntity, Guid> repository)
             : base(repository)
         {
 

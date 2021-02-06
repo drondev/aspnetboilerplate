@@ -19,7 +19,7 @@ namespace Abp.EntityFramework.GraphDiff.Mapping
         public static EntityMapping For<TEntity>(Expression<Func<IUpdateConfiguration<TEntity>, object>> expression)
             where TEntity : class, IEntity
         {
-            return For<TEntity, int>(expression);
+            return For<TEntity, Guid>(expression);
         }
 
         /// <summary>
