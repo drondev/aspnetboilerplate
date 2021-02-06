@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Abp.TestBase;
+using Abp.Tests;
 using Abp.Web.Configuration;
 using Shouldly;
 using Xunit;
@@ -68,8 +69,8 @@ namespace Abp.Web.Common.Tests.Configuration
 
         private void LoginAsDefaultTenantAdmin()
         {
-            AbpSession.UserId = 2;
-            AbpSession.TenantId = 1;
+            AbpSession.UserId = 2.ToGuid();
+            AbpSession.TenantId = 1.ToGuid();
         }
     }
 }

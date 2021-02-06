@@ -342,7 +342,7 @@ namespace Abp.Application.Features
             {
                 foreach (var featureName in featureNames)
                 {
-                    if (!(await featureChecker.IsEnabledAsync(tenantId, featureName)))
+                    if (!await featureChecker.IsEnabledAsync(tenantId, featureName))
                     {
                         throw new AbpAuthorizationException(
                             string.Format(

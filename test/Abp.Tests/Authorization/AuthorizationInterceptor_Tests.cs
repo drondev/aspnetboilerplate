@@ -41,8 +41,8 @@ namespace Abp.Tests.Authorization
 
             //Mock session
             var session = Substitute.For<IAbpSession>();
-            session.TenantId.Returns(1);
-            session.UserId.Returns(1);
+            session.TenantId.Returns(1.ToGuid());
+            session.UserId.Returns(1.ToGuid());
             LocalIocManager.IocContainer.Register(Component.For<IAbpSession>().Instance(session));
 
             //Mock permission checker
@@ -149,8 +149,8 @@ namespace Abp.Tests.Authorization
 
         private void EmptySession()
         {
-            LocalIocManager.Resolve<IAbpSession>().TenantId.Returns((int?) null);
-            LocalIocManager.Resolve<IAbpSession>().UserId.Returns((int?) null);
+            LocalIocManager.Resolve<IAbpSession>().TenantId.Returns((Guid?) null);
+            LocalIocManager.Resolve<IAbpSession>().UserId.Returns((Guid?) null);
         }
 
         public class MyTestClassToBeAuthorized_Sync

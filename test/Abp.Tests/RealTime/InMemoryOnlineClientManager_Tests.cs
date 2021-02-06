@@ -21,13 +21,13 @@ namespace Abp.Tests.RealTime
         [Fact]
         public void Test_All()
         {
-            Guid tenantId = 1;
+            Guid tenantId = GuidStatics.ID_1;
 
-            Dictionary<string, int> connections = new Dictionary<string, int>();
+            var connections = new Dictionary<string, Guid>();
 
             for (int i = 0; i < 100; i++)
             {
-                connections.Add(MakeNewConnectionId(), i + 1);
+                connections.Add(MakeNewConnectionId(), (i + 1).ToGuid());
             }
 
             foreach (var pair in connections)

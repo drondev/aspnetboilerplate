@@ -1,6 +1,7 @@
 using System;
 using Abp.Application.Features;
 using Abp.Authorization;
+using Abp.Tests;
 using Abp.UI;
 using AbpAspNetCoreDemo.Core.Application.Dtos;
 
@@ -17,7 +18,7 @@ namespace AbpAspNetCoreDemo.Core.Application
         {
             return new ProductDto()
             {
-                Id = 42,
+                Id = 42.ToGuid(),
                 Name = "My product 1",
                 Price = 99.9f
             };

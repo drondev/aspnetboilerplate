@@ -6,6 +6,7 @@ using Shouldly;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Abp.Tests;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
@@ -61,34 +62,34 @@ namespace Abp.EntityFrameworkCore.Tests.Tests
             postsDefault.Any(p => p.TenantId == null).ShouldBeTrue();
 
             //Switch to tenant 42
-            AbpSession.TenantId = 42;
+            AbpSession.TenantId = 42.ToGuid();
 
             var posts1 = await _postRepository.GetAllListAsync();
-            posts1.All(p => p.TenantId == 42).ShouldBeTrue();
+            posts1.All(p => p.TenantId == 42.ToGuid()).ShouldBeTrue();
 
             //Switch to host
             AbpSession.TenantId = null;
             
             var posts2 = await _postRepository.GetAllListAsync();
-            posts2.Any(p => p.TenantId == 42).ShouldBeFalse();
+            posts2.Any(p => p.TenantId == 42 .ToGuid()).ShouldBeFalse();
 
             using (var uow = _unitOfWorkManager.Begin())
             {
                 //Switch to tenant 42
-                using (_unitOfWorkManager.Current.SetTenantId(42))
+                using (_unitOfWorkManager.Current.SetTenantId(42.ToGuid()))
                 {
                     var posts3 = await _postRepository.GetAllListAsync(p => p.Title != null);
-                    posts3.All(p => p.TenantId == 42).ShouldBeTrue();
+                    posts3.All(p => p.TenantId == 42.ToGuid()).ShouldBeTrue();
                 }
 
                 var posts4 = await _postRepository.GetAllListAsync();
-                posts4.Any(p => p.TenantId == 42).ShouldBeFalse();
+                posts4.Any(p => p.TenantId == 42.ToGuid()).ShouldBeFalse();
                 posts4.Any(p => p.TenantId == null).ShouldBeTrue();
 
                 using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.MayHaveTenant))
                 {
                     var posts5 = await _postRepository.GetAllListAsync();
-                    posts5.Any(p => p.TenantId == 42).ShouldBeTrue();
+                    posts5.Any(p => p.TenantId == 42.ToGuid()).ShouldBeTrue();
                     posts5.Any(p => p.TenantId == null).ShouldBeTrue();
                 }
             }

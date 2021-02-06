@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace AbpAspNetCoreDemo.Core.Application
             return ObjectMapper.Map<List<ProductDto>>(await _productRepository.GetAllListAsync());
         }
         
-        public int CreateProduct(ProductCreateInput input)
+        public Guid CreateProduct(ProductCreateInput input)
         {
             var product = ObjectMapper.Map<Product>(input);
             return _productRepository.InsertAndGetId(product);

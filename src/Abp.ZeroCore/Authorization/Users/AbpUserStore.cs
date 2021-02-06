@@ -90,7 +90,6 @@ namespace Abp.Authorization.Users
             _unitOfWorkManager = unitOfWorkManager;
             UserRepository = userRepository;
             _roleRepository = roleRepository;
-            _asyncQueryableExecuter = asyncQueryableExecuter;
             _userRoleRepository = userRoleRepository;
             _userLoginRepository = userLoginRepository;
             _userClaimRepository = userClaimRepository;
@@ -101,6 +100,7 @@ namespace Abp.Authorization.Users
             AbpSession = NullAbpSession.Instance;
             ErrorDescriber = new IdentityErrorDescriber();
             Logger = NullLogger.Instance;
+            _asyncQueryableExecuter = NullAsyncQueryableExecuter.Instance;
         }
 
         /// <summary>Saves the current store.</summary>

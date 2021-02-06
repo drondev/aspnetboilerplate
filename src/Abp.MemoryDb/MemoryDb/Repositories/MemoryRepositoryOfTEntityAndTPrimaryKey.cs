@@ -28,6 +28,11 @@ namespace Abp.MemoryDb.Repositories
             return Table.AsQueryable();
         }
 
+        public override Task<IQueryable<TEntity>> GetAllAsync()
+        {
+            return Task.FromResult(Table.AsQueryable());
+        }
+
         public override TEntity Insert(TEntity entity)
         {
             if (entity.IsTransient())

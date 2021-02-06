@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace Abp.MultiTenancy
 {
@@ -11,5 +12,13 @@ namespace Abp.MultiTenancy
         TenantCacheItem GetOrNull(string tenancyName);
 
         TenantCacheItem GetOrNull(Guid tenantId);
+
+        Task<TenantCacheItem> GetAsync(Guid tenantId);
+
+        Task<TenantCacheItem> GetAsync(string tenancyName);
+
+        Task<TenantCacheItem> GetOrNullAsync(string tenancyName);
+
+        Task<TenantCacheItem> GetOrNullAsync(Guid tenantId);
     }
 }

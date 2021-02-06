@@ -12,7 +12,7 @@ namespace Abp.EntityFramework.Tests
 {
     public class DbContextTypeMatcher_Tests : TestBaseWithLocalIocManager
     {
-        private int? _tenantId = 1;
+        private int? _tenantId = 1.ToGuid();
 
         private readonly DbContextTypeMatcher matcher;
 

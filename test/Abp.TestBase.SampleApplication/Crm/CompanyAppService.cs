@@ -1,11 +1,12 @@
-﻿using Abp.Application.Services;
+﻿using System;
+using Abp.Application.Services;
 using Abp.Domain.Repositories;
 
 namespace Abp.TestBase.SampleApplication.Crm
 {
-    public class CompanyAppService : CrudAppService<Company, CompanyDto, int>
+    public class CompanyAppService : CrudAppService<Company, CompanyDto, Guid>
     {
-        public CompanyAppService(IRepository<Company, int> repository) : base(repository)
+        public CompanyAppService(IRepository<Company, Guid> repository) : base(repository)
         {
             GetPermissionName = "GetCompanyPermission";
             GetAllPermissionName = "GetAllCompaniesPermission";

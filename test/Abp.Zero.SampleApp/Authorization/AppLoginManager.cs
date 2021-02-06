@@ -1,4 +1,5 @@
-﻿using Abp.Authorization;
+﻿using System;
+using Abp.Authorization;
 using Abp.Authorization.Users;
 using Abp.Configuration;
 using Abp.Configuration.Startup;
@@ -9,18 +10,19 @@ using Abp.Zero.Configuration;
 using Abp.Zero.SampleApp.MultiTenancy;
 using Abp.Zero.SampleApp.Roles;
 using Abp.Zero.SampleApp.Users;
+using Microsoft.AspNet.Identity;
 
 namespace Abp.Zero.SampleApp.Authorization
 {
     public class AppLogInManager : AbpLogInManager<Tenant, Role, User>
     {
         public AppLogInManager(
-            UserManager userManager, 
+            UserManager<> userManager, 
             IMultiTenancyConfig multiTenancyConfig, 
             IRepository<Tenant> tenantRepository, 
             IUnitOfWorkManager unitOfWorkManager, 
             ISettingManager settingManager, 
-            IRepository<UserLoginAttempt, long> userLoginAttemptRepository, 
+            IRepository<UserLoginAttempt, Guid> userLoginAttemptRepository, 
             IUserManagementConfig userManagementConfig, IIocResolver iocResolver, 
             RoleManager roleManager) 
             : base(

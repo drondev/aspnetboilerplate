@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Abp.MultiTenancy;
 
@@ -8,7 +9,7 @@ namespace Abp.Tests.MultiTenancy
     {
         private readonly List<TenantInfo> _tenants = new List<TenantInfo>
         {
-            new TenantInfo(1, "Default")
+            new TenantInfo(Guid.Parse("00000000-0000-0000-0000-000000000001"), "Default")
         };
 
         public TenantInfo Find(Guid tenantId)

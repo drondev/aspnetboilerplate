@@ -127,7 +127,7 @@ namespace Abp.Dapper.NHibernate.Tests
         {
             using (IUnitOfWorkCompleteHandle uow = Resolve<IUnitOfWorkManager>().Begin())
             {
-                int personId = _personDapperRepository.InsertAndGetId(new Person("Oguzhan_Same_Uow"));
+                Guid personId = _personDapperRepository.InsertAndGetId(new Person("Oguzhan_Same_Uow"));
 
                 Person person = _personRepository.Get(personId);
 
@@ -152,7 +152,7 @@ namespace Abp.Dapper.NHibernate.Tests
             {
                 using (IUnitOfWorkCompleteHandle uow = Resolve<IUnitOfWorkManager>().Begin())
                 {
-                    int personId = _personDapperRepository.InsertAndGetId(new Person("Oguzhan_Same_Uow"));
+                    Guid personId = _personDapperRepository.InsertAndGetId(new Person("Oguzhan_Same_Uow"));
 
                     Person person = _personRepository.Get(personId);
 

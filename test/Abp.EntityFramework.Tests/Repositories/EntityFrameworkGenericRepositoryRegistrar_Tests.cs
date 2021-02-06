@@ -51,17 +51,17 @@ namespace Abp.EntityFramework.Tests.Repositories
             var entity1RepositoryWithModuleInterface = LocalIocManager.Resolve<IMyModuleRepository<MyEntity1>>();
             entity1RepositoryWithModuleInterface.ShouldNotBe(null);
             (entity1RepositoryWithModuleInterface is MyModuleRepositoryBase<MyEntity1>).ShouldBe(true);
-            (entity1RepositoryWithModuleInterface is EfRepositoryBase<MyModuleDbContext, MyEntity1, int>).ShouldBe(true);
+            (entity1RepositoryWithModuleInterface is EfRepositoryBase<MyModuleDbContext, MyEntity1, Guid>).ShouldBe(true);
 
             //Entity 1 (with specified Repository forIMyModuleRepository )
-            var entity1RepositoryWithModuleInterfaceWithPk = LocalIocManager.Resolve<IMyModuleRepository<MyEntity1, int>>();
+            var entity1RepositoryWithModuleInterfaceWithPk = LocalIocManager.Resolve<IMyModuleRepository<MyEntity1, Guid>>();
             entity1RepositoryWithModuleInterfaceWithPk.ShouldNotBe(null);
-            (entity1RepositoryWithModuleInterfaceWithPk is MyModuleRepositoryBase<MyEntity1, int>).ShouldBe(true);
-            (entity1RepositoryWithModuleInterfaceWithPk is EfRepositoryBase<MyModuleDbContext, MyEntity1, int>).ShouldBe(true);
+            (entity1RepositoryWithModuleInterfaceWithPk is MyModuleRepositoryBase<MyEntity1, Guid>).ShouldBe(true);
+            (entity1RepositoryWithModuleInterfaceWithPk is EfRepositoryBase<MyModuleDbContext, MyEntity1, Guid>).ShouldBe(true);
 
             //Entity 2
-            var entity2Repository = LocalIocManager.Resolve<IRepository<MyEntity2, long>>();
-            (entity2Repository is EfRepositoryBase<MyMainDbContext, MyEntity2, long>).ShouldBe(true);
+            var entity2Repository = LocalIocManager.Resolve<IRepository<MyEntity2, Guid>>();
+            (entity2Repository is EfRepositoryBase<MyMainDbContext, MyEntity2, Guid>).ShouldBe(true);
             entity2Repository.ShouldNotBe(null);
 
             //Entity 3
@@ -98,7 +98,7 @@ namespace Abp.EntityFramework.Tests.Repositories
 
         }
 
-        public class MyEntity2 : Entity<long>
+        public class MyEntity2 : Entity<Guid>
         {
 
         }

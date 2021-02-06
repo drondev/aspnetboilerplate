@@ -1,4 +1,6 @@
-﻿namespace Abp.Zero.SampleApp.Users.Dto
+﻿using System;
+
+namespace Abp.Zero.SampleApp.Users.Dto
 {
     public class ResetPasswordInput
     {

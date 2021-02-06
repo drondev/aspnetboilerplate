@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Abp.BackgroundJobs;
 using Abp.Domain.Uow;
 using Abp.Notifications;
@@ -17,7 +18,15 @@ namespace Abp.Tests.Notifications
         {
             _store = Substitute.For<INotificationStore>();
             _backgroundJobManager = Substitute.For<IBackgroundJobManager>();
-            _publisher = new NotificationPublisher(_store, _backgroundJobManager, Substitute.For<INotificationConfiguration>(), SequentialGuidGenerator.Instance, LocalIocManager);
+            _publisher = new NotificationPublisher(
+                _store,
+                _backgroundJobManager,
+                Substitute.For<INotificationDistributer>(),
+                Substitute.For<INotificationConfiguration>(),
+                SequentialGuidGenerator.Instance,
+                LocalIocManager
+            );
+            
             _publisher.UnitOfWorkManager = Substitute.For<IUnitOfWorkManager>();
             _publisher.UnitOfWorkManager.Current.Returns(Substitute.For<IActiveUnitOfWork>());
         }
@@ -52,7 +61,7 @@ namespace Abp.Tests.Notifications
         public async Task Should_PublishAsync_To_Host()
         {
             // Act
-            await _publisher.PublishAsync("TestNotification", tenantIds: new int?[] { null });
+            await _publisher.PublishAsync("TestNotification", tenantIds: new Guid?[] { null });
 
             // Assert
             await _store.Received()
@@ -65,7 +74,7 @@ namespace Abp.Tests.Notifications
         public void Should_Publish_To_Host()
         {
             // Act
-            _publisher.Publish("TestNotification", tenantIds: new int?[] { null });
+            _publisher.Publish("TestNotification", tenantIds: new Guid?[] { null });
 
             // Assert
             _store.Received()

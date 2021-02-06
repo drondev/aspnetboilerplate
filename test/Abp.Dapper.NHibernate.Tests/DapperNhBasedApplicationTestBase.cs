@@ -16,8 +16,8 @@ namespace Abp.Dapper.NHibernate.Tests
 
         protected DapperNhBasedApplicationTestBase()
         {
-            AbpSession.UserId = 1;
-            AbpSession.TenantId = 1;
+            AbpSession.UserId = Guid.Parse("00000000-0000-0000-0000-000000000001");
+            AbpSession.TenantId = Guid.Parse("00000000-0000-0000-0000-000000000001");
         }
 
         protected override void PreInitialize()

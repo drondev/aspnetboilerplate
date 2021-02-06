@@ -55,6 +55,11 @@ namespace Abp.MongoDb.Repositories
             return Collection.AsQueryable();
         }
 
+        public override Task<IQueryable<TEntity>> GetAllAsync()
+        {
+            return Task.FromResult(Collection.AsQueryable());
+        }
+
         public override TEntity Get(TPrimaryKey id)
         {
             var query = MongoDB.Driver.Builders.Query<TEntity>.EQ(e => e.Id, id);

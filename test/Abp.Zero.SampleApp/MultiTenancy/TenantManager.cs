@@ -10,7 +10,7 @@ namespace Abp.Zero.SampleApp.MultiTenancy
     {
         public TenantManager(
             IRepository<Tenant> tenantRepository,
-            IRepository<TenantFeatureSetting, long> tenantFeatureRepository,
+            IRepository<TenantFeatureSetting, Guid> tenantFeatureRepository,
             EditionManager editionManager,
             IAbpZeroFeatureValueStore featureValueStore) :
             base(tenantRepository, tenantFeatureRepository, editionManager, featureValueStore)
